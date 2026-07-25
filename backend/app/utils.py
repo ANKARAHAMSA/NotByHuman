@@ -1,6 +1,5 @@
 import io
 import re
-from typing import str
 
 def clean_text(text: str) -> str:
     """Normalize line endings and strip unnecessary whitespace."""

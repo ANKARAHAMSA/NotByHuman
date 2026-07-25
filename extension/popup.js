@@ -8,10 +8,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   const riskBadge = document.getElementById('riskBadge');
   const verdictText = document.getElementById('verdictText');
 
-  // Load selection if available from content or storage
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  if (tab?.id) {
-    try {
+  // Load current page text selection if present
+  try {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    if (tab?.id) {
       const [{ result }] = await chrome.scripting.executeScript({
         target: { tabId: tab.id },
         func: () => window.getSelection().toString()
@@ -19,17 +19,21 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (result && result.trim()) {
         textInput.value = result.trim();
       }
-    } catch (e) {
-      // Ignored on internal chrome:// pages
     }
+  } catch (e) {
+    // Ignore restricted extension or chrome pages
   }
 
   scanBtn.addEventListener('click', async () => {
     const text = textInput.value.trim();
-    if (!text) return;
+    if (!text) {
+      alert("Please enter or highlight text to analyze.");
+      return;
+    }
 
     scanBtn.disabled = true;
-    scanBtn.textContent = 'Extracting...';
+    scanBtn.textContent = 'Extracting Stylometrics...';
+    resultBox.style.display = 'none';
 
     try {
       const response = await fetch(API_URL, {
@@ -38,11 +42,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         body: JSON.stringify({ text })
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        throw new Error('Analysis failed');
+        alert(data.detail || 'Analysis error. Minimum ~15 words required.');
+        return;
       }
 
-      const data = await response.json();
       resultBox.style.display = 'block';
       scoreDisplay.textContent = `${data.ai_percentage}% AI`;
       verdictText.textContent = data.verdict_summary;
@@ -59,7 +65,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         riskBadge.textContent = 'Human Flow';
       }
     } catch (err) {
-      alert('Could not connect to NotByHuman server (http://localhost:8000). Ensure backend is running.');
+      alert('Could not connect to NotByHuman server (http://localhost:8000). Ensure python run.py is active.');
     } finally {
       scanBtn.disabled = false;
       scanBtn.textContent = 'Analyze Text';
