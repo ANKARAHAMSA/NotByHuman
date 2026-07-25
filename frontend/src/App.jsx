@@ -16,6 +16,10 @@ export default function App() {
   const [error, setError] = useState(null);
 
   const workspaceRef = useRef(null);
+  const heroRef = useRef(null);
+  const bgLogoRef = useRef(null);
+  const bgGlitchRef = useRef(null);
+  const pointerLeakRef = useRef(null);
 
   // Mouse cursor tracking for interactive pointer light leaks
   useEffect(() => {
@@ -26,54 +30,63 @@ export default function App() {
       document.documentElement.style.setProperty('--mouse-y', y);
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // 60FPS / 120FPS Inertial Physics Lerp Scroll Engine
+  // Zero-Lag Direct GPU Composited Scroll Engine
   useEffect(() => {
-    let targetY = window.scrollY;
-    let currentY = window.scrollY;
-    let animationFrameId = null;
+    let ticking = false;
+
+    const updateScrollGPU = () => {
+      const vh = window.innerHeight || 800;
+      const scrollY = window.scrollY;
+
+      // Page 1 Hero opacity: 1 -> 0 cleanly between scroll 0 and 0.45 * vh
+      const heroProgress = Math.min(1, Math.max(0, scrollY / (vh * 0.45)));
+      const heroOpacity = (1 - heroProgress).toFixed(3);
+      const heroScale = (1 - (heroProgress * 0.12)).toFixed(3);
+
+      // Page 2 Glitch background opacity: 0 -> 1 cleanly between 0.25 * vh and 0.75 * vh
+      const glitchProgress = Math.min(1, Math.max(0, (scrollY - (vh * 0.25)) / (vh * 0.5)));
+      const glitchOpacity = glitchProgress.toFixed(3);
+      const glitchScale = (1.06 - (glitchProgress * 0.06)).toFixed(3);
+      const translateY = ((1 - glitchProgress) * 45).toFixed(1);
+
+      // Direct GPU Style Updates on DOM elements (Zero DOM Tree Recalculation)
+      if (bgLogoRef.current) {
+        bgLogoRef.current.style.opacity = heroOpacity;
+      }
+      if (heroRef.current) {
+        heroRef.current.style.opacity = heroOpacity;
+        heroRef.current.style.transform = `scale(${heroScale}) translate3d(0, 0, 0)`;
+      }
+      if (bgGlitchRef.current) {
+        bgGlitchRef.current.style.opacity = glitchOpacity;
+        bgGlitchRef.current.style.transform = `scale(${glitchScale}) translate3d(0, 0, 0)`;
+      }
+      if (pointerLeakRef.current) {
+        pointerLeakRef.current.style.opacity = glitchOpacity;
+      }
+      if (workspaceRef.current) {
+        workspaceRef.current.style.transform = `translate3d(0, ${translateY}px, 0)`;
+      }
+
+      ticking = false;
+    };
 
     const onScroll = () => {
-      targetY = window.scrollY;
+      if (!ticking) {
+        requestAnimationFrame(updateScrollGPU);
+        ticking = true;
+      }
     };
 
-    const updatePhysics = () => {
-      // Smooth linear interpolation (lerp factor = 0.12)
-      currentY += (targetY - currentY) * 0.12;
-
-      // Calculate smooth interpolation factors
-      const vh = window.innerHeight || 800;
-
-      // Page 1 Hero fades out cleanly between 0 and 0.45 * vh
-      const heroProgress = Math.min(1, Math.max(0, currentY / (vh * 0.45)));
-      const heroOpacity = 1 - heroProgress;
-      const heroScale = 1 - (heroProgress * 0.12);
-
-      // Page 2 Glitch background fades in cleanly between 0.25 * vh and 0.8 * vh
-      const glitchProgress = Math.min(1, Math.max(0, (currentY - (vh * 0.25)) / (vh * 0.55)));
-      const glitchOpacity = glitchProgress;
-      const glitchScale = 1.06 - (glitchProgress * 0.06);
-      const translateY = (1 - glitchProgress) * 45;
-
-      document.documentElement.style.setProperty('--hero-opacity', heroOpacity.toFixed(4));
-      document.documentElement.style.setProperty('--hero-scale', heroScale.toFixed(4));
-      document.documentElement.style.setProperty('--glitch-opacity', glitchOpacity.toFixed(4));
-      document.documentElement.style.setProperty('--glitch-scale', glitchScale.toFixed(4));
-      document.documentElement.style.setProperty('--workspace-translateY', `${translateY.toFixed(2)}px`);
-
-      animationFrameId = requestAnimationFrame(updatePhysics);
-    };
+    // Initial positioning
+    updateScrollGPU();
 
     window.addEventListener('scroll', onScroll, { passive: true });
-    animationFrameId = requestAnimationFrame(updatePhysics);
-
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      if (animationFrameId) cancelAnimationFrame(animationFrameId);
-    };
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   // Fetch preset samples on mount
@@ -173,14 +186,16 @@ export default function App() {
       <div className="cyber-noise-overlay" />
 
       {/* Dual Dynamic Background Cross-Fade Layers */}
-      <div className="bg-layer-logo" />
-      <div className="bg-layer-glitch" />
+      <div ref={bgLogoRef} className="bg-layer-logo" />
+      <div ref={bgGlitchRef} className="bg-layer-glitch" />
 
       {/* Interactive Mouse Pointer Light Leak Flare on Page 2 */}
-      <div className="pointer-light-leak" />
+      <div ref={pointerLeakRef} className="pointer-light-leak" />
 
       {/* PAGE 1: Full-Bleed Logo Background Landing Section */}
-      <WhiteLogoHero onScrollToWorkspace={scrollToWorkspace} />
+      <div ref={heroRef} className="hero-page-section">
+        <WhiteLogoHero onScrollToWorkspace={scrollToWorkspace} />
+      </div>
 
       {/* PAGE 2: Centered Search Workspace Section */}
       <div ref={workspaceRef} className="workspace-page-section">
