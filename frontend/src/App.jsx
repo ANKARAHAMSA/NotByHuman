@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
+import DetectiveColumn from './components/DetectiveColumn';
 import InputSection from './components/InputSection';
 import ResultsGauge from './components/ResultsGauge';
 import FeatureCards from './components/FeatureCards';
@@ -15,13 +16,12 @@ export default function App() {
   const [samples, setSamples] = useState(null);
   const [error, setError] = useState(null);
 
-  // Fetch preset samples from backend on mount
+  // Fetch preset samples on mount
   useEffect(() => {
     fetch(`${API_BASE}/samples`)
       .then(res => res.json())
       .then(data => setSamples(data))
       .catch(() => {
-        // Fallback default samples if backend proxy offline
         setSamples({
           human: {
             title: "Human Sample",
@@ -89,6 +89,9 @@ export default function App() {
 
       const data = await response.json();
       setResults(data);
+      if (data.extracted_text) {
+        setText(data.extracted_text);
+      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -97,17 +100,22 @@ export default function App() {
   };
 
   return (
-    <div style={{ maxWidth: '1080px', margin: '0 auto', padding: '2.5rem 1.25rem 4rem 1.25rem' }}>
+    <div className="app-container">
       <Header />
 
-      <InputSection
-        text={text}
-        setText={setText}
-        onAnalyze={handleAnalyze}
-        loading={loading}
-        onLoadSample={handleLoadSample}
-        onFileUpload={handleFileUpload}
-      />
+      {/* Main Grid: Left Animated Detective, Center Input Workspace */}
+      <div className="workspace-grid">
+        <DetectiveColumn />
+
+        <InputSection
+          text={text}
+          setText={setText}
+          onAnalyze={handleAnalyze}
+          loading={loading}
+          onLoadSample={handleLoadSample}
+          onFileUpload={handleFileUpload}
+        />
+      </div>
 
       {error && (
         <div style={{

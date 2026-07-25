@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { Upload, FileText, Play, RotateCcw, AlertCircle } from 'lucide-react';
+import React, { useRef, useState } from 'react';
+import { Upload, FileText, Play, RotateCcw, AlertCircle, Image as ImageIcon, Sparkles } from 'lucide-react';
 
 export default function InputSection({
   text,
@@ -10,6 +10,8 @@ export default function InputSection({
   onFileUpload
 }) {
   const fileInputRef = useRef(null);
+  const imageInputRef = useRef(null);
+  const [dragOver, setDragOver] = useState(false);
 
   const wordCount = text.trim() ? text.trim().split(/\s+/).length : 0;
   const charCount = text.length;
@@ -21,20 +23,39 @@ export default function InputSection({
     }
   };
 
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setDragOver(false);
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      onFileUpload(e.dataTransfer.files[0]);
+    }
+  };
+
   return (
-    <div className="glass-panel" style={{ padding: '1.75rem', marginBottom: '2rem' }}>
+    <div
+      className="glass-panel"
+      style={{
+        padding: '1.75rem',
+        border: dragOver ? '2px dashed var(--primary-cyan)' : '1px solid var(--border-glass)',
+        transition: 'all 0.2s ease'
+      }}
+      onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+      onDragLeave={() => setDragOver(false)}
+      onDrop={handleDrop}
+    >
+      {/* Centered Workspace Header */}
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: '1rem',
+        marginBottom: '1.25rem',
         flexWrap: 'wrap',
         gap: '12px'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <FileText size={20} color="var(--primary-cyan)" />
           <h2 style={{ fontSize: '1.2rem', fontWeight: '700', fontFamily: 'var(--font-heading)' }}>
-            Input Text
+            Input Workspace (Text or Photo)
           </h2>
         </div>
 
@@ -58,11 +79,21 @@ export default function InputSection({
           <button
             type="button"
             className="btn-secondary"
+            onClick={() => imageInputRef.current?.click()}
+            disabled={loading}
+            title="Upload photo or screenshot of text"
+          >
+            <ImageIcon size={14} color="var(--primary-cyan)" /> Upload Photo / Screenshot
+          </button>
+          <button
+            type="button"
+            className="btn-secondary"
             onClick={() => fileInputRef.current?.click()}
             disabled={loading}
           >
             <Upload size={14} /> Upload (.txt, .docx)
           </button>
+
           <input
             type="file"
             ref={fileInputRef}
@@ -70,21 +101,29 @@ export default function InputSection({
             accept=".txt,.docx"
             style={{ display: 'none' }}
           />
+          <input
+            type="file"
+            ref={imageInputRef}
+            onChange={handleFileChange}
+            accept=".png,.jpg,.jpeg,.webp"
+            style={{ display: 'none' }}
+          />
         </div>
       </div>
 
+      {/* Main Centered Input Area */}
       <div style={{ position: 'relative', marginBottom: '1rem' }}>
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="Paste or type text to analyze (minimum ~30 words recommended)..."
-          rows={9}
+          placeholder="Copy and paste text here, or drag & drop a text document / photo screenshot of text..."
+          rows={10}
           style={{
             width: '100%',
             background: 'rgba(15, 23, 42, 0.65)',
             border: '1px solid var(--border-glass)',
             borderRadius: '12px',
-            padding: '1rem',
+            padding: '1.1rem',
             color: 'var(--text-main)',
             fontSize: '0.98rem',
             fontFamily: 'var(--font-body)',
@@ -98,6 +137,7 @@ export default function InputSection({
         />
       </div>
 
+      {/* Input Action Controls & Counter */}
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
@@ -134,10 +174,12 @@ export default function InputSection({
             disabled={loading || wordCount < 10}
           >
             {loading ? (
-              <>Extracting Stylometrics...</>
+              <>
+                <Sparkles size={16} className="animate-spin" /> Inspecting...
+              </>
             ) : (
               <>
-                <Play size={16} fill="currentColor" /> Analyze Text
+                <Play size={16} fill="currentColor" /> Analyze Text / Photo
               </>
             )}
           </button>

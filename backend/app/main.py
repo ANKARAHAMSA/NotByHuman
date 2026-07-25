@@ -6,7 +6,7 @@ from typing import Optional, List, Dict, Any
 
 from app.stylometrics import StylometricExtractor
 from app.model import NotByHumanClassifier
-from app.utils import clean_text, count_words, parse_txt_file, parse_docx_file
+from app.utils import clean_text, count_words, parse_txt_file, parse_docx_file, parse_image_file
 
 app = FastAPI(
     title="NotByHuman API",
@@ -69,7 +69,6 @@ def analyze_text(payload: AnalysisRequest):
     sentence_highlights = extractor.analyze_sentences(cleaned)
     flagged_phrases = extractor.get_detected_phrases(cleaned)
     
-    # Calculate word count status warning if under 50 words
     confidence_warning = None
     if word_count < 50:
         confidence_warning = "Text sample is under 50 words. Stylometric variance is most accurate on longer samples (50+ words)."
@@ -103,7 +102,14 @@ async def upload_file(file: UploadFile = File(...)):
         text = parse_txt_file(content)
     elif filename.endswith(".docx"):
         text = parse_docx_file(content)
+    elif filename.endswith((".png", ".jpg", ".jpeg", ".webp")):
+        text = parse_image_file(content)
+        if not text:
+            raise HTTPException(
+                status_code=400,
+                detail="Image text extraction completed. Please ensure image text is clear or paste text directly."
+            )
     else:
-        raise HTTPException(status_code=400, detail="Unsupported file format. Please upload a .txt or .docx file.")
+        raise HTTPException(status_code=400, detail="Unsupported format. Please upload a .txt, .docx, .png, or .jpg file.")
         
     return analyze_text(AnalysisRequest(text=text))

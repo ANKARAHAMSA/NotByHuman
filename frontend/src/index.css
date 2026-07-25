@@ -1,7 +1,7 @@
 :root {
   --bg-dark: #090d16;
-  --bg-card: rgba(18, 25, 41, 0.7);
-  --bg-card-hover: rgba(26, 36, 58, 0.8);
+  --bg-card: rgba(18, 25, 41, 0.75);
+  --bg-card-hover: rgba(26, 36, 58, 0.85);
   --border-glass: rgba(255, 255, 255, 0.08);
   --border-glass-bright: rgba(255, 255, 255, 0.18);
   
@@ -28,8 +28,8 @@
 body {
   background-color: var(--bg-dark);
   background-image: 
-    radial-gradient(circle at 15% 15%, rgba(6, 182, 212, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 85% 75%, rgba(139, 92, 246, 0.08) 0%, transparent 40%);
+    radial-gradient(circle at 15% 15%, rgba(6, 182, 212, 0.10) 0%, transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(139, 92, 246, 0.10) 0%, transparent 45%);
   color: var(--text-main);
   font-family: var(--font-body);
   min-height: 100vh;
@@ -55,6 +55,44 @@ body {
   background: linear-gradient(135deg, #38bdf8 0%, #a855f7 50%, #ec4899 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+/* Float Animation for Detective Image */
+@keyframes floatDetective {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(0.5deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+.float-detective-wrapper {
+  animation: floatDetective 4s ease-in-out infinite;
+}
+
+/* Minimalist Grid Layout */
+.app-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 4rem 1.25rem;
+}
+
+.workspace-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 2rem;
+  align-items: start;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 900px) {
+  .workspace-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Custom Scrollbar */

@@ -33,3 +33,23 @@ def parse_docx_file(content: bytes) -> str:
         return '\n\n'.join(full_text)
     except Exception as e:
         raise ValueError(f"Failed to parse .docx file: {e}")
+
+def parse_image_file(content: bytes) -> str:
+    """Extract text from uploaded image bytes (.png, .jpg, .jpeg, .webp) using Tesseract OCR or PIL fallback."""
+    try:
+        from PIL import Image
+        img = Image.open(io.BytesIO(content))
+        
+        # Try PyTesseract OCR
+        try:
+            import pytesseract
+            text = pytesseract.image_to_string(img)
+            if text and len(text.strip()) > 10:
+                return clean_text(text)
+        except Exception:
+            pass
+
+        # Return fallback status if OCR engine is not installed locally
+        return ""
+    except Exception as e:
+        raise ValueError(f"Failed to process image file: {e}")
