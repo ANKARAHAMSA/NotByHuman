@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Search, Upload, Image as ImageIcon, Sparkles, Clipboard, Check, User, Bot, Zap } from 'lucide-react';
+import { Search, Upload, Sparkles, Clipboard, Check, User, Bot, Zap } from 'lucide-react';
 
 export default function InputSection({
   text,
@@ -9,8 +9,7 @@ export default function InputSection({
   onLoadSample,
   onFileUpload
 }) {
-  const fileInputRef = useRef(null);
-  const imageInputRef = useRef(null);
+  const unifiedFileInputRef = useRef(null);
   const [copied, setCopied] = useState(false);
 
   const handleFileChange = (e) => {
@@ -59,7 +58,7 @@ export default function InputSection({
           value={text}
           onChange={(e) => setText(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Paste text, drop document, or upload photo screenshot to check if AI or Human..."
+          placeholder="Paste text, upload document (.txt, .docx), or photo screenshot to check..."
         />
 
         {/* Action Controls inside Pill */}
@@ -73,22 +72,14 @@ export default function InputSection({
             {copied ? <Check size={16} color="var(--accent-green)" /> : <Clipboard size={16} />}
           </button>
 
+          {/* SINGLE UNIFIED UPLOAD BUTTON FOR ALL DOCUMENTS AND IMAGES */}
           <button
             type="button"
             className="pill-icon-btn"
-            onClick={() => imageInputRef.current?.click()}
-            title="Upload photo / screenshot of text for OCR"
+            onClick={() => unifiedFileInputRef.current?.click()}
+            title="Upload Document (.txt, .docx) or Photo Screenshot for OCR"
           >
-            <ImageIcon size={16} color="#f97316" />
-          </button>
-
-          <button
-            type="button"
-            className="pill-icon-btn"
-            onClick={() => fileInputRef.current?.click()}
-            title="Upload .txt or .docx file"
-          >
-            <Upload size={16} />
+            <Upload size={16} color="#f97316" />
           </button>
 
           <button
@@ -107,18 +98,12 @@ export default function InputSection({
           </button>
         </div>
 
+        {/* Universal Hidden File Input */}
         <input
           type="file"
-          ref={fileInputRef}
+          ref={unifiedFileInputRef}
           onChange={handleFileChange}
-          accept=".txt,.docx"
-          style={{ display: 'none' }}
-        />
-        <input
-          type="file"
-          ref={imageInputRef}
-          onChange={handleFileChange}
-          accept=".png,.jpg,.jpeg,.webp"
+          accept=".txt,.docx,.png,.jpg,.jpeg,.webp"
           style={{ display: 'none' }}
         />
       </div>
