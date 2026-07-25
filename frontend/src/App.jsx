@@ -139,6 +139,9 @@ export default function App() {
 
   return (
     <div className="app-viewport">
+      {/* Dynamic Animated Cyber Noise Atmosphere Overlay */}
+      <div className="cyber-noise-overlay" />
+
       {/* Dual Dynamic Background Cross-Fade Layers */}
       <div className="bg-layer-logo" />
       <div className="bg-layer-glitch" />
