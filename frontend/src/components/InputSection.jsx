@@ -133,7 +133,7 @@ export default function InputSection({
           onClick={() => onLoadSample('ai')}
           title="Load AI (GPT-4) generated essay sample"
         >
-          <Bot size={18} color="#06b6d4" />
+          <Bot size={18} color="#ffffff" />
           <span>AI Essay (GPT-4) Sample</span>
         </button>
       </div>
