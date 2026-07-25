@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import Header from './components/Header';
+import React, { useState, useEffect, useRef } from 'react';
+import WhiteLogoHero from './components/WhiteLogoHero';
 import InputSection from './components/InputSection';
 import ResultsGauge from './components/ResultsGauge';
 import FeatureCards from './components/FeatureCards';
@@ -15,6 +15,8 @@ export default function App() {
   const [samples, setSamples] = useState(null);
   const [error, setError] = useState(null);
 
+  const workspaceRef = useRef(null);
+
   // Mouse cursor tracking for interactive pointer light leaks
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -26,6 +28,23 @@ export default function App() {
 
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  // Smooth scroll background state transition (White Hero -> Glitch Interface)
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 350) {
+        document.body.classList.add('bg-state-glitch');
+        document.body.classList.remove('bg-state-white');
+      } else {
+        document.body.classList.add('bg-state-white');
+        document.body.classList.remove('bg-state-glitch');
+      }
+    };
+
+    handleScroll(); // Initial check
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   // Fetch preset samples on mount
@@ -46,6 +65,12 @@ export default function App() {
         });
       });
   }, []);
+
+  const scrollToWorkspace = () => {
+    if (workspaceRef.current) {
+      workspaceRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   const handleAnalyze = async () => {
     if (!text.trim()) return;
@@ -78,6 +103,7 @@ export default function App() {
       setText(samples[type].text);
       setResults(null);
       setError(null);
+      scrollToWorkspace();
     }
   };
 
@@ -104,6 +130,7 @@ export default function App() {
       if (data.extracted_text) {
         setText(data.extracted_text);
       }
+      scrollToWorkspace();
     } catch (err) {
       setError(err.message);
     } finally {
@@ -115,12 +142,12 @@ export default function App() {
     <div className="app-viewport">
       {/* 1. Interactive Mouse Pointer Light Leak Flare */}
       <div className="pointer-light-leak" />
-      <div className="light-leak-overlay" />
 
-      {/* 2. Main Centered Workspace */}
-      <div className="centered-container">
-        <Header />
+      {/* 2. White Hero Landing Experience with Split Head Logo */}
+      <WhiteLogoHero onScrollToWorkspace={scrollToWorkspace} />
 
+      {/* 3. Centered Workspace Container (Glitch Background Interface) */}
+      <div ref={workspaceRef} className="centered-container">
         {/* Compact Pill Search Bar (Matching Screenshot #1) */}
         <InputSection
           text={text}
@@ -166,11 +193,11 @@ export default function App() {
           color: 'var(--text-dim)',
           fontSize: '0.85rem'
         }}>
-          NotByHuman — Stylometric AI Text & Plagiarism Intelligence Platform
+          NotByHuman — DETECT. VERIFY. EXPOSE.
         </footer>
       </div>
 
-      {/* 3. Floating Animated "?" Disclaimer Modal (Matching Screenshot #2) */}
+      {/* 4. Floating Animated "?" Disclaimer Modal */}
       <DisclaimerModal />
     </div>
   );
