@@ -30,15 +30,24 @@ export default function App() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // Smooth background cross-fade scroll calculation (Page 1 Logo -> Page 2 Glitch)
+  // Silky Smooth Multi-Property Scroll Interpolation
   useEffect(() => {
     const handleScroll = () => {
       const vh = window.innerHeight;
       const scrollY = window.scrollY;
-      const progress = Math.min(1, Math.max(0, scrollY / (vh * 0.75)));
+      const progress = Math.min(1, Math.max(0, scrollY / (vh * 0.65)));
 
-      document.documentElement.style.setProperty('--logo-opacity', (1 - progress).toString());
-      document.documentElement.style.setProperty('--glitch-opacity', progress.toString());
+      const heroOpacity = 1 - progress;
+      const heroScale = 1 - (progress * 0.12);
+      const glitchOpacity = progress;
+      const glitchScale = 1.08 - (progress * 0.08);
+      const translateY = (1 - progress) * 45;
+
+      document.documentElement.style.setProperty('--hero-opacity', heroOpacity.toString());
+      document.documentElement.style.setProperty('--hero-scale', heroScale.toString());
+      document.documentElement.style.setProperty('--glitch-opacity', glitchOpacity.toString());
+      document.documentElement.style.setProperty('--glitch-scale', glitchScale.toString());
+      document.documentElement.style.setProperty('--workspace-translateY', `${translateY}px`);
     };
 
     handleScroll();
