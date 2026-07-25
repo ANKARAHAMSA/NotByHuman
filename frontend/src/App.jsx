@@ -39,7 +39,7 @@ export default function App() {
   const bgGlitchRef = useRef(null);
   const pointerLeakRef = useRef(null);
 
-  // Mouse cursor tracking for interactive pointer light leaks & custom lens follower
+  // Mouse cursor tracking for interactive pointer light leaks
   useEffect(() => {
     const handleMouseMove = (e) => {
       const x = `${e.clientX}px`;
@@ -213,9 +213,6 @@ export default function App() {
 
   return (
     <div className="app-viewport">
-      {/* Sleek Custom Magnifying Lens Follower */}
-      <div className="custom-cursor-lens" />
-
       {/* Dynamic Animated Cyber Noise Atmosphere Overlay */}
       <div className="cyber-noise-overlay" />
 

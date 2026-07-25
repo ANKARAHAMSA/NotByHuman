@@ -35,25 +35,9 @@
   padding: 0;
 }
 
-/* SLEEK CUSTOM MAGNIFYING GLASS CURSOR SYSTEM */
+/* INSTANT NATIVE THEME-ORANGE MAGNIFYING GLASS CURSOR (ZERO LAG) */
 html, body, button, input, textarea, a, div, span {
-  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='%23ff6b00' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='7' fill='rgba(255, 107, 0, 0.15)'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65' stroke='%23ff8800' stroke-width='3.2'/%3E%3Ccircle cx='11' cy='11' r='2.5' fill='%23ffffff' opacity='0.7'/%3E%3C/svg%3E") 8 8, auto !important;
-}
-
-.custom-cursor-lens {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(255, 107, 0, 0.6);
-  background: radial-gradient(circle, rgba(255, 107, 0, 0.12) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%) translate3d(var(--mouse-x), var(--mouse-y), 0);
-  transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 0 15px rgba(255, 107, 0, 0.4);
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ff6b00' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='10' cy='10' r='6.5' fill='rgba(255, 107, 0, 0.25)'/%3E%3Cline x1='20' y1='20' x2='15' y2='15' stroke='%23ff6b00' stroke-width='3'/%3E%3C/svg%3E") 8 8, pointer !important;
 }
 
 /* CONTINUOUS PURE WHITE BACKGROUND FALLBACK */
