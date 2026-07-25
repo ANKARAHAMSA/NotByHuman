@@ -6,7 +6,7 @@ export default function DisclaimerModal() {
 
   return (
     <>
-      {/* Floating Animated "?" Button (FAB) */}
+      {/* Floating Animated "?" Button (FAB) in Orange & White */}
       <button
         type="button"
         className="fab-info-btn"
@@ -17,13 +17,13 @@ export default function DisclaimerModal() {
         ?
       </button>
 
-      {/* Popover Modal (Matching Screenshot #2) */}
+      {/* Popover Modal (Matching Screenshot #2 in Orange & White Theme) */}
       {isOpen && (
         <div className="modal-backdrop" onClick={() => setIsOpen(false)}>
           <div className="modal-card" onClick={(e) => e.stopPropagation()}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <ShieldAlert size={22} color="var(--accent-amber)" />
+                <ShieldAlert size={22} color="#f97316" />
                 <h3 style={{ fontSize: '1.25rem', fontWeight: '700', fontFamily: 'var(--font-heading)', color: '#ffffff' }}>
                   Honest Limitations & Portfolio Notes
                 </h3>
@@ -61,10 +61,10 @@ export default function DisclaimerModal() {
                 alignItems: 'center',
                 gap: '10px',
                 padding: '12px 16px',
-                background: 'rgba(6, 182, 212, 0.1)',
-                border: '1px solid rgba(6, 182, 212, 0.25)',
+                background: 'rgba(249, 115, 22, 0.1)',
+                border: '1px solid rgba(249, 115, 22, 0.3)',
                 borderRadius: '12px',
-                color: 'var(--primary-cyan)',
+                color: '#f97316',
                 fontSize: '0.88rem'
               }}>
                 <BookOpenCheck size={18} style={{ flexShrink: 0 }} />
