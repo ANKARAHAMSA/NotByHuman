@@ -59,7 +59,7 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: url('/logo_head_only.jpg') no-repeat center center / contain #ffffff;
+  background: #ffffff;
   opacity: var(--logo-opacity);
   pointer-events: none;
   z-index: 0;
@@ -116,6 +116,18 @@ body {
   justify-content: center;
   text-align: center;
   position: relative;
+  opacity: var(--logo-opacity);
+  transition: opacity 0.1s linear;
+}
+
+.logo-head-img {
+  max-width: 340px;
+  width: 80%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
 }
 
 .workspace-page-section {
