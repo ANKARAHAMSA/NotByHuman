@@ -30,9 +30,10 @@
   padding: 0;
 }
 
-/* PURE WHITE BACKGROUND FALLBACK FOR ENTIRE APP */
+/* PURE WHITE BACKGROUND FALLBACK & SCROLL SNAPPING */
 html {
   scroll-behavior: smooth;
+  scroll-snap-type: y proximity;
   background-color: #ffffff;
   margin: 0;
   padding: 0;
@@ -107,6 +108,7 @@ body {
 }
 
 .hero-page-section {
+  scroll-snap-align: start;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -116,12 +118,23 @@ body {
   position: relative;
 }
 
+.workspace-page-section {
+  scroll-snap-align: start;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 3rem 1.25rem;
+  position: relative;
+  z-index: 2;
+}
+
 .centered-container {
   max-width: 920px;
   margin: 0 auto;
-  padding: 4rem 1.25rem 5rem 1.25rem;
   width: 100%;
-  min-height: 100vh;
 }
 
 /* High Contrast Glassmorphism Panels */

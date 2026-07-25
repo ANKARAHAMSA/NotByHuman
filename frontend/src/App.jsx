@@ -149,55 +149,57 @@ export default function App() {
       {/* PAGE 1: Full-Bleed Logo Background Landing Section */}
       <WhiteLogoHero onScrollToWorkspace={scrollToWorkspace} />
 
-      {/* PAGE 2: Centered Search Workspace Framing Glitch Background */}
-      <div ref={workspaceRef} className="centered-container">
-        {/* Compact Capsule Pill Search Bar (Matching Screenshot #1) */}
-        <InputSection
-          text={text}
-          setText={setText}
-          onAnalyze={handleAnalyze}
-          loading={loading}
-          onLoadSample={handleLoadSample}
-          onFileUpload={handleFileUpload}
-        />
+      {/* PAGE 2: Centered Search Workspace Section */}
+      <div ref={workspaceRef} className="workspace-page-section">
+        <div className="centered-container">
+          {/* Compact Capsule Pill Search Bar (Matching Screenshot #1) */}
+          <InputSection
+            text={text}
+            setText={setText}
+            onAnalyze={handleAnalyze}
+            loading={loading}
+            onLoadSample={handleLoadSample}
+            onFileUpload={handleFileUpload}
+          />
 
-        {error && (
-          <div className="glass-panel" style={{
-            padding: '1rem 1.25rem',
-            background: 'rgba(244, 63, 94, 0.2)',
-            borderColor: 'rgba(244, 63, 94, 0.4)',
-            color: '#ffffff',
-            marginBottom: '2rem',
-            fontSize: '0.95rem'
+          {error && (
+            <div className="glass-panel" style={{
+              padding: '1rem 1.25rem',
+              background: 'rgba(244, 63, 94, 0.2)',
+              borderColor: 'rgba(244, 63, 94, 0.4)',
+              color: '#ffffff',
+              marginBottom: '2rem',
+              fontSize: '0.95rem'
+            }}>
+              ⚠️ <strong>Error:</strong> {error}
+            </div>
+          )}
+
+          {results && (
+            <>
+              <ResultsGauge results={results} />
+              
+              <FeatureCards
+                metrics={results.metrics}
+                explanations={results.explanations}
+                flaggedPhrases={results.flagged_phrases}
+              />
+
+              <SentenceHeatmap sentences={results.sentence_highlights} />
+            </>
+          )}
+
+          <footer style={{
+            textAlign: 'center',
+            paddingTop: '3rem',
+            marginTop: '3rem',
+            borderTop: '1px solid var(--border-glass)',
+            color: 'var(--text-dim)',
+            fontSize: '0.85rem'
           }}>
-            ⚠️ <strong>Error:</strong> {error}
-          </div>
-        )}
-
-        {results && (
-          <>
-            <ResultsGauge results={results} />
-            
-            <FeatureCards
-              metrics={results.metrics}
-              explanations={results.explanations}
-              flaggedPhrases={results.flagged_phrases}
-            />
-
-            <SentenceHeatmap sentences={results.sentence_highlights} />
-          </>
-        )}
-
-        <footer style={{
-          textAlign: 'center',
-          paddingTop: '3rem',
-          marginTop: '3rem',
-          borderTop: '1px solid var(--border-glass)',
-          color: 'var(--text-dim)',
-          fontSize: '0.85rem'
-        }}>
-          NotByHuman — DETECT. VERIFY. EXPOSE.
-        </footer>
+            NotByHuman — DETECT. VERIFY. EXPOSE.
+          </footer>
+        </div>
       </div>
 
       {/* Floating Animated "?" Disclaimer Modal */}
