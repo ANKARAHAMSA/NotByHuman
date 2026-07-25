@@ -376,9 +376,9 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(5, 7, 12, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(15, 20, 28, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   z-index: 1000;
   display: flex;
   align-items: center;
@@ -387,14 +387,15 @@ body {
 }
 
 .modal-card {
-  background: rgba(18, 20, 28, 0.96);
-  border: 1px solid rgba(249, 115, 22, 0.45);
+  background: #ffffff;
+  border: 2px solid #f97316;
   border-radius: 20px;
-  padding: 2rem;
-  max-width: 620px;
+  padding: 2.25rem;
+  max-width: 640px;
   width: 100%;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 35px rgba(249, 115, 22, 0.25);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(249, 115, 22, 0.3);
   position: relative;
+  color: #0f172a;
 }
 
 /* Custom Scrollbar */
