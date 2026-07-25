@@ -46,7 +46,7 @@ export default function InputSection({
 
   return (
     <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-      {/* Sleek Pill Search Bar (Matching Screenshot #1) */}
+      {/* Sleek Pill Search Bar */}
       <div className="pill-search-container">
         {/* Laser Scanner animation during inference */}
         {loading && <div className="pill-laser-beam" />}
@@ -81,7 +81,7 @@ export default function InputSection({
             onClick={() => imageInputRef.current?.click()}
             title="Upload photo / screenshot of text for OCR"
           >
-            <ImageIcon size={16} color="var(--primary-cyan)" />
+            <ImageIcon size={16} color="#f97316" />
           </button>
 
           <button
@@ -131,7 +131,7 @@ export default function InputSection({
         <button
           type="button"
           onClick={() => onLoadSample('human')}
-          style={{ background: 'none', border: 'none', color: 'var(--primary-cyan)', cursor: 'pointer', fontWeight: '600', textDecoration: 'underline' }}
+          style={{ background: 'none', border: 'none', color: '#f97316', cursor: 'pointer', fontWeight: '600', textDecoration: 'underline' }}
         >
           👤 Human Essay
         </button>
@@ -139,7 +139,7 @@ export default function InputSection({
         <button
           type="button"
           onClick={() => onLoadSample('ai')}
-          style={{ background: 'none', border: 'none', color: 'var(--primary-purple)', cursor: 'pointer', fontWeight: '600', textDecoration: 'underline' }}
+          style={{ background: 'none', border: 'none', color: '#ffffff', cursor: 'pointer', fontWeight: '600', textDecoration: 'underline' }}
         >
           🤖 AI Essay (GPT-4)
         </button>
