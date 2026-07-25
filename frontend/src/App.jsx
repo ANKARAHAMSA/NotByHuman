@@ -30,33 +30,50 @@ export default function App() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // Clean Non-Overlapping Scroll Interpolation Curve
+  // 60FPS / 120FPS Inertial Physics Lerp Scroll Engine
   useEffect(() => {
-    const handleScroll = () => {
-      const vh = window.innerHeight;
-      const scrollY = window.scrollY;
+    let targetY = window.scrollY;
+    let currentY = window.scrollY;
+    let animationFrameId = null;
+
+    const onScroll = () => {
+      targetY = window.scrollY;
+    };
+
+    const updatePhysics = () => {
+      // Smooth linear interpolation (lerp factor = 0.12)
+      currentY += (targetY - currentY) * 0.12;
+
+      // Calculate smooth interpolation factors
+      const vh = window.innerHeight || 800;
 
       // Page 1 Hero fades out cleanly between 0 and 0.45 * vh
-      const heroProgress = Math.min(1, Math.max(0, scrollY / (vh * 0.45)));
+      const heroProgress = Math.min(1, Math.max(0, currentY / (vh * 0.45)));
       const heroOpacity = 1 - heroProgress;
       const heroScale = 1 - (heroProgress * 0.12);
 
-      // Page 2 Glitch background fades in cleanly between 0.3 * vh and 0.8 * vh
-      const glitchProgress = Math.min(1, Math.max(0, (scrollY - (vh * 0.25)) / (vh * 0.55)));
+      // Page 2 Glitch background fades in cleanly between 0.25 * vh and 0.8 * vh
+      const glitchProgress = Math.min(1, Math.max(0, (currentY - (vh * 0.25)) / (vh * 0.55)));
       const glitchOpacity = glitchProgress;
       const glitchScale = 1.06 - (glitchProgress * 0.06);
       const translateY = (1 - glitchProgress) * 45;
 
-      document.documentElement.style.setProperty('--hero-opacity', heroOpacity.toString());
-      document.documentElement.style.setProperty('--hero-scale', heroScale.toString());
-      document.documentElement.style.setProperty('--glitch-opacity', glitchOpacity.toString());
-      document.documentElement.style.setProperty('--glitch-scale', glitchScale.toString());
-      document.documentElement.style.setProperty('--workspace-translateY', `${translateY}px`);
+      document.documentElement.style.setProperty('--hero-opacity', heroOpacity.toFixed(4));
+      document.documentElement.style.setProperty('--hero-scale', heroScale.toFixed(4));
+      document.documentElement.style.setProperty('--glitch-opacity', glitchOpacity.toFixed(4));
+      document.documentElement.style.setProperty('--glitch-scale', glitchScale.toFixed(4));
+      document.documentElement.style.setProperty('--workspace-translateY', `${translateY.toFixed(2)}px`);
+
+      animationFrameId = requestAnimationFrame(updatePhysics);
     };
 
-    handleScroll();
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    animationFrameId = requestAnimationFrame(updatePhysics);
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+    };
   }, []);
 
   // Fetch preset samples on mount
@@ -168,7 +185,7 @@ export default function App() {
       {/* PAGE 2: Centered Search Workspace Section */}
       <div ref={workspaceRef} className="workspace-page-section">
         <div className="centered-container">
-          {/* Compact Capsule Pill Search Bar (Matching Screenshot #1) */}
+          {/* Compact Capsule Pill Search Bar */}
           <InputSection
             text={text}
             setText={setText}
