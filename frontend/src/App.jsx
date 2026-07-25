@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Header from './components/Header';
-import DetectiveColumn from './components/DetectiveColumn';
+import GlitchHero from './components/GlitchHero';
+import LeftSidebar from './components/LeftSidebar';
 import InputSection from './components/InputSection';
 import ResultsGauge from './components/ResultsGauge';
 import FeatureCards from './components/FeatureCards';
@@ -15,6 +16,8 @@ export default function App() {
   const [results, setResults] = useState(null);
   const [samples, setSamples] = useState(null);
   const [error, setError] = useState(null);
+
+  const workspaceRef = useRef(null);
 
   // Fetch preset samples on mount
   useEffect(() => {
@@ -34,6 +37,12 @@ export default function App() {
         });
       });
   }, []);
+
+  const scrollToWorkspace = () => {
+    if (workspaceRef.current) {
+      workspaceRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   const handleAnalyze = async () => {
     if (!text.trim()) return;
@@ -66,6 +75,7 @@ export default function App() {
       setText(samples[type].text);
       setResults(null);
       setError(null);
+      scrollToWorkspace();
     }
   };
 
@@ -92,6 +102,7 @@ export default function App() {
       if (data.extracted_text) {
         setText(data.extracted_text);
       }
+      scrollToWorkspace();
     } catch (err) {
       setError(err.message);
     } finally {
@@ -100,62 +111,70 @@ export default function App() {
   };
 
   return (
-    <div className="app-container">
-      <Header />
+    <div>
+      {/* 1. Full-width Landing Glitch Hero Intro */}
+      <GlitchHero onScrollToWorkspace={scrollToWorkspace} />
 
-      {/* Main Grid: Left Animated Detective, Center Input Workspace */}
-      <div className="workspace-grid">
-        <DetectiveColumn />
+      {/* 2. Split Workspace Container */}
+      <div ref={workspaceRef} className="split-layout-container">
+        <div className="main-split-grid">
+          {/* Left Docked Full-Height Sticky Glitch Sidebar */}
+          <LeftSidebar onReset={() => { setText(''); setResults(null); }} />
 
-        <InputSection
-          text={text}
-          setText={setText}
-          onAnalyze={handleAnalyze}
-          loading={loading}
-          onLoadSample={handleLoadSample}
-          onFileUpload={handleFileUpload}
-        />
-      </div>
+          {/* Centered Workspace Column */}
+          <div>
+            <InputSection
+              text={text}
+              setText={setText}
+              onAnalyze={handleAnalyze}
+              loading={loading}
+              onLoadSample={handleLoadSample}
+              onFileUpload={handleFileUpload}
+            />
 
-      {error && (
-        <div style={{
-          padding: '1rem 1.25rem',
-          background: 'rgba(244, 63, 94, 0.1)',
-          border: '1px solid rgba(244, 63, 94, 0.3)',
-          borderRadius: '12px',
-          color: '#fecdd3',
-          marginBottom: '2rem',
-          fontSize: '0.95rem'
-        }}>
-          ⚠️ <strong>Error:</strong> {error}
+            {error && (
+              <div style={{
+                padding: '1rem 1.25rem',
+                background: 'rgba(244, 63, 94, 0.1)',
+                border: '1px solid rgba(244, 63, 94, 0.3)',
+                borderRadius: '14px',
+                color: '#fecdd3',
+                marginBottom: '2rem',
+                fontSize: '0.95rem'
+              }}>
+                ⚠️ <strong>Error:</strong> {error}
+              </div>
+            )}
+
+            {results && (
+              <>
+                <ResultsGauge results={results} />
+                
+                <FeatureCards
+                  metrics={results.metrics}
+                  explanations={results.explanations}
+                  flaggedPhrases={results.flagged_phrases}
+                />
+
+                <SentenceHeatmap sentences={results.sentence_highlights} />
+              </>
+            )}
+
+            <Disclaimer />
+          </div>
         </div>
-      )}
 
-      {results && (
-        <>
-          <ResultsGauge results={results} />
-          
-          <FeatureCards
-            metrics={results.metrics}
-            explanations={results.explanations}
-            flaggedPhrases={results.flagged_phrases}
-          />
-
-          <SentenceHeatmap sentences={results.sentence_highlights} />
-        </>
-      )}
-
-      <Disclaimer />
-
-      <footer style={{
-        textAlign: 'center',
-        paddingTop: '2rem',
-        borderTop: '1px solid var(--border-glass)',
-        color: 'var(--text-dim)',
-        fontSize: '0.85rem'
-      }}>
-        NotByHuman — Open Stylometric AI Detection Portfolio Project
-      </footer>
+        <footer style={{
+          textAlign: 'center',
+          paddingTop: '3rem',
+          marginTop: '3rem',
+          borderTop: '1px solid var(--border-glass)',
+          color: 'var(--text-dim)',
+          fontSize: '0.85rem'
+        }}>
+          NotByHuman 2.0 — Live Cybernetic AI Stylometric Intelligence Platform
+        </footer>
+      </div>
     </div>
   );
 }

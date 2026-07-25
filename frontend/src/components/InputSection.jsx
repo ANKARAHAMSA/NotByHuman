@@ -36,13 +36,18 @@ export default function InputSection({
       className="glass-panel"
       style={{
         padding: '1.75rem',
+        position: 'relative',
+        overflow: 'hidden',
         border: dragOver ? '2px dashed var(--primary-cyan)' : '1px solid var(--border-glass)',
-        transition: 'all 0.2s ease'
+        transition: 'all 0.25s ease'
       }}
       onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
       onDragLeave={() => setDragOver(false)}
       onDrop={handleDrop}
     >
+      {/* Laser Scanning Effect during analysis */}
+      {loading && <div className="laser-beam" />}
+
       {/* Centered Workspace Header */}
       <div style={{
         display: 'flex',
@@ -55,7 +60,7 @@ export default function InputSection({
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <FileText size={20} color="var(--primary-cyan)" />
           <h2 style={{ fontSize: '1.2rem', fontWeight: '700', fontFamily: 'var(--font-heading)' }}>
-            Input Workspace (Text or Photo)
+            Linguistic Inspection Workspace
           </h2>
         </div>
 
@@ -81,9 +86,9 @@ export default function InputSection({
             className="btn-secondary"
             onClick={() => imageInputRef.current?.click()}
             disabled={loading}
-            title="Upload photo or screenshot of text"
+            title="Upload photo or screenshot of text for OCR"
           >
-            <ImageIcon size={14} color="var(--primary-cyan)" /> Upload Photo / Screenshot
+            <ImageIcon size={14} color="var(--primary-cyan)" /> Upload Photo Screenshot
           </button>
           <button
             type="button"
@@ -111,23 +116,23 @@ export default function InputSection({
         </div>
       </div>
 
-      {/* Main Centered Input Area */}
+      {/* Text Area */}
       <div style={{ position: 'relative', marginBottom: '1rem' }}>
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="Copy and paste text here, or drag & drop a text document / photo screenshot of text..."
-          rows={10}
+          placeholder="Copy and paste text here, or drop a photo screenshot of text to analyze..."
+          rows={11}
           style={{
             width: '100%',
-            background: 'rgba(15, 23, 42, 0.65)',
+            background: 'rgba(11, 16, 28, 0.75)',
             border: '1px solid var(--border-glass)',
-            borderRadius: '12px',
-            padding: '1.1rem',
+            borderRadius: '14px',
+            padding: '1.25rem',
             color: 'var(--text-main)',
-            fontSize: '0.98rem',
+            fontSize: '1rem',
             fontFamily: 'var(--font-body)',
-            lineHeight: '1.6',
+            lineHeight: '1.65',
             resize: 'vertical',
             outline: 'none',
             transition: 'border-color 0.2s ease'
@@ -137,7 +142,7 @@ export default function InputSection({
         />
       </div>
 
-      {/* Input Action Controls & Counter */}
+      {/* Controls & Word Counter */}
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
@@ -175,11 +180,11 @@ export default function InputSection({
           >
             {loading ? (
               <>
-                <Sparkles size={16} className="animate-spin" /> Inspecting...
+                <Sparkles size={18} className="animate-spin" /> Scanning Stylometrics...
               </>
             ) : (
               <>
-                <Play size={16} fill="currentColor" /> Analyze Text / Photo
+                <Play size={18} fill="currentColor" /> Inspect Text / Photo
               </>
             )}
           </button>
