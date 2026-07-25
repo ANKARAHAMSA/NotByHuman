@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Search, Upload, Image as ImageIcon, Sparkles, Clipboard, Check } from 'lucide-react';
+import { Search, Upload, Image as ImageIcon, Sparkles, Clipboard, Check, User, Bot, Zap } from 'lucide-react';
 
 export default function InputSection({
   text,
@@ -12,8 +12,6 @@ export default function InputSection({
   const fileInputRef = useRef(null);
   const imageInputRef = useRef(null);
   const [copied, setCopied] = useState(false);
-
-  const wordCount = text.trim() ? text.trim().split(/\s+/).length : 0;
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -125,23 +123,30 @@ export default function InputSection({
         />
       </div>
 
-      {/* Preset Quick Loader Links */}
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap', fontSize: '0.85rem' }}>
-        <span style={{ color: 'var(--text-dim)' }}>Quick Preset Samples:</span>
+      {/* HIGH-CONCEPT INTERACTIVE PRESET CYBER CHIPS */}
+      <div className="preset-chip-container">
+        <div className="preset-badge">
+          <Zap size={14} color="#f97316" /> Quick Demo Samples:
+        </div>
+
         <button
           type="button"
+          className="preset-chip-human"
           onClick={() => onLoadSample('human')}
-          style={{ background: 'none', border: 'none', color: '#f97316', cursor: 'pointer', fontWeight: '600', textDecoration: 'underline' }}
+          title="Load authentic human-written essay sample"
         >
-          👤 Human Essay
+          <User size={18} color="#f97316" />
+          <span>Human Essay Sample</span>
         </button>
-        <span style={{ color: 'var(--text-dim)' }}>|</span>
+
         <button
           type="button"
+          className="preset-chip-ai"
           onClick={() => onLoadSample('ai')}
-          style={{ background: 'none', border: 'none', color: '#ffffff', cursor: 'pointer', fontWeight: '600', textDecoration: 'underline' }}
+          title="Load AI (GPT-4) generated essay sample"
         >
-          🤖 AI Essay (GPT-4)
+          <Bot size={18} color="#06b6d4" />
+          <span>AI Essay (GPT-4) Sample</span>
         </button>
       </div>
     </div>
