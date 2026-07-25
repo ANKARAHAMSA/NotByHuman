@@ -48,8 +48,8 @@ export default function InputSection({
         {/* Laser Scanner animation during inference */}
         {loading && <div className="pill-laser-beam" />}
 
-        {/* Magnifying Glass Icon */}
-        <Search size={22} color="#ffffff" style={{ flexShrink: 0 }} />
+        {/* Magnifying Glass Icon in Vibrant Theme Orange */}
+        <Search size={22} color="#ff6b00" style={{ flexShrink: 0 }} />
 
         {/* Text Input Field */}
         <input
@@ -79,7 +79,7 @@ export default function InputSection({
             onClick={() => unifiedFileInputRef.current?.click()}
             title="Upload Document (.txt, .docx) or Photo Screenshot for OCR"
           >
-            <Upload size={16} color="#f97316" />
+            <Upload size={16} color="#ff6b00" />
           </button>
 
           <button
@@ -111,7 +111,7 @@ export default function InputSection({
       {/* HIGH-CONCEPT INTERACTIVE PRESET CYBER CHIPS */}
       <div className="preset-chip-container">
         <div className="preset-badge">
-          <Zap size={14} color="#f97316" /> Quick Demo Samples:
+          <Zap size={14} color="#ff6b00" /> Quick Demo Samples:
         </div>
 
         <button
@@ -120,7 +120,7 @@ export default function InputSection({
           onClick={() => onLoadSample('human')}
           title="Load authentic human-written essay sample"
         >
-          <User size={18} color="#f97316" />
+          <User size={18} color="#ff6b00" />
           <span>Human Essay Sample</span>
         </button>
 

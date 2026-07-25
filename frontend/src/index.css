@@ -2,11 +2,11 @@
   --bg-card: rgba(18, 20, 28, 0.94);
   --bg-card-hover: rgba(26, 30, 42, 0.96);
   --border-glass: rgba(255, 255, 255, 0.15);
-  --border-glass-bright: rgba(249, 115, 22, 0.45);
+  --border-glass-bright: rgba(255, 107, 0, 0.5);
   
-  --primary-orange: #f97316;
-  --primary-dark-orange: #ea580c;
-  --accent-orange: #f97316;
+  --primary-orange: #ff6b00;
+  --primary-dark-orange: #ff8800;
+  --accent-orange: #ff6b00;
   --accent-green: #10b981;
   --accent-amber: #f59e0b;
   --accent-rose: #f43f5e;
@@ -121,8 +121,8 @@ body {
   height: 100vh;
   background: radial-gradient(
     600px circle at var(--mouse-x) var(--mouse-y),
-    rgba(249, 115, 22, 0.18),
-    rgba(234, 88, 12, 0.1) 40%,
+    rgba(255, 107, 0, 0.18),
+    rgba(255, 136, 0, 0.1) 40%,
     transparent 80%
   );
   opacity: var(--glitch-opacity);
@@ -215,21 +215,21 @@ body {
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, #ffffff 0%, #f97316 50%, #ea580c 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #ff6b00 50%, #ff8800 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-/* COMPACT PILL SEARCH BAR STYLES */
+/* COMPACT VIBRANT THEME ORANGE PILL SEARCH BAR STYLES */
 .pill-search-container {
-  background: #12141c;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #111522;
+  border: 1px solid rgba(255, 107, 0, 0.35);
   border-radius: 9999px;
   padding: 8px 12px 8px 20px;
   display: flex;
   align-items: center;
   gap: 12px;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 20px rgba(249, 115, 22, 0.2);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 25px rgba(255, 107, 0, 0.25);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   z-index: 2;
@@ -238,8 +238,8 @@ body {
 }
 
 .pill-search-container:hover, .pill-search-container:focus-within {
-  border-color: #f97316;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 30px rgba(249, 115, 22, 0.35);
+  border-color: #ff6b00;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 35px rgba(255, 107, 0, 0.45);
   transform: translateY(-2px);
 }
 
@@ -258,25 +258,25 @@ body {
 }
 
 .pill-action-btn {
-  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  background: linear-gradient(135deg, #ff6b00 0%, #ff8800 100%);
   color: #ffffff;
   border: none;
   border-radius: 9999px;
-  padding: 12px 28px;
-  font-weight: 700;
+  padding: 12px 30px;
+  font-weight: 800;
   font-family: var(--font-heading);
-  font-size: 0.98rem;
+  font-size: 1.0rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.4);
+  box-shadow: 0 4px 18px rgba(255, 107, 0, 0.55);
 }
 
 .pill-action-btn:hover {
-  transform: scale(1.03);
-  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.55);
+  transform: scale(1.04);
+  box-shadow: 0 6px 25px rgba(255, 107, 0, 0.75);
 }
 
 .pill-action-btn:disabled {
@@ -300,8 +300,8 @@ body {
 }
 
 .pill-icon-btn:hover {
-  background: rgba(249, 115, 22, 0.2);
-  border-color: #f97316;
+  background: rgba(255, 107, 0, 0.2);
+  border-color: #ff6b00;
   color: #ffffff;
   transform: scale(1.08);
 }
@@ -333,8 +333,8 @@ body {
 }
 
 .preset-chip-human {
-  background: rgba(249, 115, 22, 0.15);
-  border: 1px solid rgba(249, 115, 22, 0.45);
+  background: rgba(255, 107, 0, 0.15);
+  border: 1px solid rgba(255, 107, 0, 0.45);
   color: #ffffff;
   padding: 10px 22px;
   border-radius: 9999px;
@@ -346,15 +346,15 @@ body {
   align-items: center;
   gap: 10px;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.25);
+  box-shadow: 0 4px 15px rgba(255, 107, 0, 0.25);
 }
 
 .preset-chip-human:hover {
-  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  background: linear-gradient(135deg, #ff6b00 0%, #ff8800 100%);
   border-color: #ffffff;
   color: #ffffff;
   transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 10px 30px rgba(249, 115, 22, 0.6);
+  box-shadow: 0 10px 30px rgba(255, 107, 0, 0.6);
 }
 
 .preset-chip-ai {
@@ -395,8 +395,8 @@ body {
   left: 0;
   height: 100%;
   width: 6px;
-  background: #f97316;
-  box-shadow: 0 0 15px #f97316, 0 0 30px #ea580c;
+  background: #ff6b00;
+  box-shadow: 0 0 15px #ff6b00, 0 0 30px #ff8800;
   pointer-events: none;
   z-index: 10;
   border-radius: 9999px;
@@ -405,9 +405,9 @@ body {
 
 /* FLOATING ANIMATED ORANGE & WHITE "?" BUTTON & MODAL */
 @keyframes fabPulse {
-  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.55); }
-  70% { transform: scale(1.08); box-shadow: 0 0 0 14px rgba(249, 115, 22, 0); }
-  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(249, 115, 22, 0); }
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 107, 0, 0.55); }
+  70% { transform: scale(1.08); box-shadow: 0 0 0 14px rgba(255, 107, 0, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 107, 0, 0); }
 }
 
 .fab-info-btn {
@@ -417,7 +417,7 @@ body {
   width: 54px;
   height: 54px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  background: linear-gradient(135deg, #ff6b00 0%, #ff8800 100%);
   border: 2px solid #ffffff;
   color: #ffffff;
   font-family: var(--font-heading);
@@ -427,7 +427,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 10px 25px rgba(249, 115, 22, 0.45);
+  box-shadow: 0 10px 25px rgba(255, 107, 0, 0.45);
   z-index: 999;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   animation: fabPulse 3s infinite;
@@ -436,9 +436,9 @@ body {
 .fab-info-btn:hover {
   transform: scale(1.15) rotate(10deg);
   background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-  border-color: #f97316;
-  color: #ea580c;
-  box-shadow: 0 15px 35px rgba(249, 115, 22, 0.6);
+  border-color: #ff6b00;
+  color: #ff6b00;
+  box-shadow: 0 15px 35px rgba(255, 107, 0, 0.6);
 }
 
 .modal-backdrop {
@@ -459,12 +459,12 @@ body {
 
 .modal-card {
   background: #ffffff;
-  border: 2px solid #f97316;
+  border: 2px solid #ff6b00;
   border-radius: 20px;
   padding: 2.25rem;
   max-width: 640px;
   width: 100%;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(249, 115, 22, 0.3);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(255, 107, 0, 0.3);
   position: relative;
   color: #0f172a;
 }
