@@ -4,7 +4,7 @@ import InputSection from './components/InputSection';
 import ResultsGauge from './components/ResultsGauge';
 import FeatureCards from './components/FeatureCards';
 import SentenceHeatmap from './components/SentenceHeatmap';
-import Disclaimer from './components/Disclaimer';
+import DisclaimerModal from './components/DisclaimerModal';
 
 const API_BASE = '/api';
 
@@ -14,6 +14,19 @@ export default function App() {
   const [results, setResults] = useState(null);
   const [samples, setSamples] = useState(null);
   const [error, setError] = useState(null);
+
+  // Mouse cursor tracking for interactive pointer light leaks
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const x = `${e.clientX}px`;
+      const y = `${e.clientY}px`;
+      document.documentElement.style.setProperty('--mouse-x', x);
+      document.documentElement.style.setProperty('--mouse-y', y);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
   // Fetch preset samples on mount
   useEffect(() => {
@@ -99,12 +112,16 @@ export default function App() {
   };
 
   return (
-    <div className="app-viewport glitch-bg-active">
-      <div className="scanline-overlay" />
+    <div className="app-viewport">
+      {/* 1. Interactive Mouse Pointer Light Leak Flare */}
+      <div className="pointer-light-leak" />
+      <div className="light-leak-overlay" />
 
+      {/* 2. Main Centered Workspace */}
       <div className="centered-container">
         <Header />
 
+        {/* Compact Pill Search Bar (Matching Screenshot #1) */}
         <InputSection
           text={text}
           setText={setText}
@@ -141,8 +158,6 @@ export default function App() {
           </>
         )}
 
-        <Disclaimer />
-
         <footer style={{
           textAlign: 'center',
           paddingTop: '3rem',
@@ -151,9 +166,12 @@ export default function App() {
           color: 'var(--text-dim)',
           fontSize: '0.85rem'
         }}>
-          NotByHuman — Open Stylometric AI Detection Intelligence Platform
+          NotByHuman — Stylometric AI Text & Plagiarism Intelligence Platform
         </footer>
       </div>
+
+      {/* 3. Floating Animated "?" Disclaimer Modal (Matching Screenshot #2) */}
+      <DisclaimerModal />
     </div>
   );
 }

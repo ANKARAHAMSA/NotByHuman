@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Upload, FileText, Play, RotateCcw, AlertCircle, Image as ImageIcon, Sparkles } from 'lucide-react';
+import { Search, Upload, Image as ImageIcon, Sparkles, Clipboard, Check } from 'lucide-react';
 
 export default function InputSection({
   text,
@@ -11,10 +11,9 @@ export default function InputSection({
 }) {
   const fileInputRef = useRef(null);
   const imageInputRef = useRef(null);
-  const [dragOver, setDragOver] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const wordCount = text.trim() ? text.trim().split(/\s+/).length : 0;
-  const charCount = text.length;
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -23,172 +22,127 @@ export default function InputSection({
     }
   };
 
-  const handleDrop = (e) => {
-    e.preventDefault();
-    setDragOver(false);
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      onFileUpload(e.dataTransfer.files[0]);
+  const handlePasteClipboard = async () => {
+    try {
+      const clipText = await navigator.clipboard.readText();
+      if (clipText) {
+        setText(clipText);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      }
+    } catch (err) {
+      alert("Unable to access clipboard. Please paste text directly into the pill box.");
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (text.trim() && !loading) {
+        onAnalyze();
+      }
     }
   };
 
   return (
-    <div
-      className="glass-panel"
-      style={{
-        padding: '1.75rem',
-        position: 'relative',
-        overflow: 'hidden',
-        border: dragOver ? '2px dashed var(--primary-cyan)' : '1px solid var(--border-glass)',
-        transition: 'all 0.25s ease'
-      }}
-      onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
-      onDragLeave={() => setDragOver(false)}
-      onDrop={handleDrop}
-    >
-      {/* Laser Scanning Effect during analysis */}
-      {loading && <div className="laser-beam" />}
+    <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+      {/* Sleek Pill Search Bar (Matching Screenshot #1) */}
+      <div className="pill-search-container">
+        {/* Laser Scanner animation during inference */}
+        {loading && <div className="pill-laser-beam" />}
 
-      {/* Centered Workspace Header */}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: '1.25rem',
-        flexWrap: 'wrap',
-        gap: '12px'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <FileText size={20} color="var(--primary-cyan)" />
-          <h2 style={{ fontSize: '1.2rem', fontWeight: '700', fontFamily: 'var(--font-heading)' }}>
-            Linguistic Inspection Workspace
-          </h2>
-        </div>
+        {/* Magnifying Glass Icon */}
+        <Search size={22} color="#ffffff" style={{ flexShrink: 0 }} />
 
-        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-          <button
-            type="button"
-            className="btn-secondary"
-            onClick={() => onLoadSample('human')}
-            disabled={loading}
-          >
-            👤 Human Essay
-          </button>
-          <button
-            type="button"
-            className="btn-secondary"
-            onClick={() => onLoadSample('ai')}
-            disabled={loading}
-          >
-            🤖 AI Essay (GPT-4)
-          </button>
-          <button
-            type="button"
-            className="btn-secondary"
-            onClick={() => imageInputRef.current?.click()}
-            disabled={loading}
-            title="Upload photo or screenshot of text for OCR"
-          >
-            <ImageIcon size={14} color="var(--primary-cyan)" /> Upload Photo Screenshot
-          </button>
-          <button
-            type="button"
-            className="btn-secondary"
-            onClick={() => fileInputRef.current?.click()}
-            disabled={loading}
-          >
-            <Upload size={14} /> Upload (.txt, .docx)
-          </button>
-
-          <input
-            type="file"
-            ref={fileInputRef}
-            onChange={handleFileChange}
-            accept=".txt,.docx"
-            style={{ display: 'none' }}
-          />
-          <input
-            type="file"
-            ref={imageInputRef}
-            onChange={handleFileChange}
-            accept=".png,.jpg,.jpeg,.webp"
-            style={{ display: 'none' }}
-          />
-        </div>
-      </div>
-
-      {/* Text Area */}
-      <div style={{ position: 'relative', marginBottom: '1rem' }}>
-        <textarea
+        {/* Text Input Field */}
+        <input
+          type="text"
+          className="pill-input"
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="Copy and paste text here, or drop a photo screenshot of text to analyze..."
-          rows={11}
-          style={{
-            width: '100%',
-            background: 'rgba(11, 16, 28, 0.75)',
-            border: '1px solid var(--border-glass)',
-            borderRadius: '14px',
-            padding: '1.25rem',
-            color: 'var(--text-main)',
-            fontSize: '1rem',
-            fontFamily: 'var(--font-body)',
-            lineHeight: '1.65',
-            resize: 'vertical',
-            outline: 'none',
-            transition: 'border-color 0.2s ease'
-          }}
-          onFocus={(e) => e.target.style.borderColor = 'var(--primary-cyan)'}
-          onBlur={(e) => e.target.style.borderColor = 'var(--border-glass)'}
+          onKeyDown={handleKeyDown}
+          placeholder="Paste text, drop document, or upload photo screenshot to check if AI or Human..."
         />
-      </div>
 
-      {/* Controls & Word Counter */}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexWrap: 'wrap',
-        gap: '12px'
-      }}>
-        <div style={{ display: 'flex', gap: '16px', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-          <span><strong>{wordCount}</strong> words</span>
-          <span><strong>{charCount}</strong> characters</span>
-          {wordCount > 0 && wordCount < 50 && (
-            <span style={{ color: 'var(--accent-amber)', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-              <AlertCircle size={14} /> 50+ words recommended
-            </span>
-          )}
-        </div>
-
-        <div style={{ display: 'flex', gap: '10px' }}>
-          {text.length > 0 && (
-            <button
-              type="button"
-              className="btn-secondary"
-              onClick={() => setText('')}
-              disabled={loading}
-            >
-              <RotateCcw size={14} /> Clear
-            </button>
-          )}
+        {/* Action Controls inside Pill */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+          <button
+            type="button"
+            className="pill-icon-btn"
+            onClick={handlePasteClipboard}
+            title="Paste from Clipboard"
+          >
+            {copied ? <Check size={16} color="var(--accent-green)" /> : <Clipboard size={16} />}
+          </button>
 
           <button
             type="button"
-            className="btn-primary"
+            className="pill-icon-btn"
+            onClick={() => imageInputRef.current?.click()}
+            title="Upload photo / screenshot of text for OCR"
+          >
+            <ImageIcon size={16} color="var(--primary-cyan)" />
+          </button>
+
+          <button
+            type="button"
+            className="pill-icon-btn"
+            onClick={() => fileInputRef.current?.click()}
+            title="Upload .txt or .docx file"
+          >
+            <Upload size={16} />
+          </button>
+
+          <button
+            type="button"
+            className="pill-action-btn"
             onClick={onAnalyze}
-            disabled={loading || wordCount < 10}
+            disabled={loading || !text.trim()}
           >
             {loading ? (
               <>
-                <Sparkles size={18} className="animate-spin" /> Scanning Stylometrics...
+                <Sparkles size={16} className="animate-spin" /> Scanning...
               </>
             ) : (
-              <>
-                <Play size={18} fill="currentColor" /> Inspect Text / Photo
-              </>
+              <>Inspect</>
             )}
           </button>
         </div>
+
+        <input
+          type="file"
+          ref={fileInputRef}
+          onChange={handleFileChange}
+          accept=".txt,.docx"
+          style={{ display: 'none' }}
+        />
+        <input
+          type="file"
+          ref={imageInputRef}
+          onChange={handleFileChange}
+          accept=".png,.jpg,.jpeg,.webp"
+          style={{ display: 'none' }}
+        />
+      </div>
+
+      {/* Preset Quick Loader Links */}
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap', fontSize: '0.85rem' }}>
+        <span style={{ color: 'var(--text-dim)' }}>Quick Preset Samples:</span>
+        <button
+          type="button"
+          onClick={() => onLoadSample('human')}
+          style={{ background: 'none', border: 'none', color: 'var(--primary-cyan)', cursor: 'pointer', fontWeight: '600', textDecoration: 'underline' }}
+        >
+          👤 Human Essay
+        </button>
+        <span style={{ color: 'var(--text-dim)' }}>|</span>
+        <button
+          type="button"
+          onClick={() => onLoadSample('ai')}
+          style={{ background: 'none', border: 'none', color: 'var(--primary-purple)', cursor: 'pointer', fontWeight: '600', textDecoration: 'underline' }}
+        >
+          🤖 AI Essay (GPT-4)
+        </button>
       </div>
     </div>
   );
