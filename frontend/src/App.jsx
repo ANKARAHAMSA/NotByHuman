@@ -19,7 +19,6 @@ export default function App() {
   const heroRef = useRef(null);
   const bgLogoRef = useRef(null);
   const bgGlitchRef = useRef(null);
-  const bgVignetteRef = useRef(null);
   const pointerLeakRef = useRef(null);
 
   // Mouse cursor tracking for interactive pointer light leaks
@@ -35,7 +34,7 @@ export default function App() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // Zero-Lag Direct GPU Composited Scroll Engine with Cinematic Vignette
+  // Zero-Lag Direct GPU Composited Scroll Engine
   useEffect(() => {
     let ticking = false;
 
@@ -65,9 +64,6 @@ export default function App() {
       if (bgGlitchRef.current) {
         bgGlitchRef.current.style.opacity = glitchOpacity;
         bgGlitchRef.current.style.transform = `scale(${glitchScale}) translate3d(0, 0, 0)`;
-      }
-      if (bgVignetteRef.current) {
-        bgVignetteRef.current.style.opacity = glitchOpacity;
       }
       if (pointerLeakRef.current) {
         pointerLeakRef.current.style.opacity = glitchOpacity;
@@ -192,9 +188,6 @@ export default function App() {
       {/* Dual Dynamic Background Cross-Fade Layers */}
       <div ref={bgLogoRef} className="bg-layer-logo" />
       <div ref={bgGlitchRef} className="bg-layer-glitch" />
-
-      {/* Cinematic Dark Vignette Atmosphere Spotlight Overlay */}
-      <div ref={bgVignetteRef} className="bg-vignette-overlay" />
 
       {/* Interactive Mouse Pointer Light Leak Flare on Page 2 */}
       <div ref={pointerLeakRef} className="pointer-light-leak" />

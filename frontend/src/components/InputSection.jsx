@@ -42,7 +42,10 @@ export default function InputSection({
   };
 
   return (
-    <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+    <div className="search-space-wrapper">
+      {/* LOCALIZED DARK VIGNETTE HALO STRICTLY BEHIND SEARCH SPACE */}
+      <div className="search-vignette-halo" />
+
       {/* Sleek Pill Search Bar */}
       <div className="pill-search-container">
         {/* Laser Scanner animation during inference */}
