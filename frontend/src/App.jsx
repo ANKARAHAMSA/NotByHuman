@@ -30,18 +30,22 @@ export default function App() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // Silky Smooth Multi-Property Scroll Interpolation
+  // Clean Non-Overlapping Scroll Interpolation Curve
   useEffect(() => {
     const handleScroll = () => {
       const vh = window.innerHeight;
       const scrollY = window.scrollY;
-      const progress = Math.min(1, Math.max(0, scrollY / (vh * 0.65)));
 
-      const heroOpacity = 1 - progress;
-      const heroScale = 1 - (progress * 0.12);
-      const glitchOpacity = progress;
-      const glitchScale = 1.08 - (progress * 0.08);
-      const translateY = (1 - progress) * 45;
+      // Page 1 Hero fades out cleanly between 0 and 0.45 * vh
+      const heroProgress = Math.min(1, Math.max(0, scrollY / (vh * 0.45)));
+      const heroOpacity = 1 - heroProgress;
+      const heroScale = 1 - (heroProgress * 0.12);
+
+      // Page 2 Glitch background fades in cleanly between 0.3 * vh and 0.8 * vh
+      const glitchProgress = Math.min(1, Math.max(0, (scrollY - (vh * 0.25)) / (vh * 0.55)));
+      const glitchOpacity = glitchProgress;
+      const glitchScale = 1.06 - (glitchProgress * 0.06);
+      const translateY = (1 - glitchProgress) * 45;
 
       document.documentElement.style.setProperty('--hero-opacity', heroOpacity.toString());
       document.documentElement.style.setProperty('--hero-scale', heroScale.toString());

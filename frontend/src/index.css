@@ -25,7 +25,7 @@
   --hero-opacity: 1;
   --hero-scale: 1;
   --glitch-opacity: 0;
-  --glitch-scale: 1.08;
+  --glitch-scale: 1.06;
   --workspace-translateY: 40px;
 }
 
@@ -156,16 +156,17 @@ body {
   will-change: transform, opacity;
 }
 
+/* TRUE TRANSPARENT PNG LOGO STYLES */
 .logo-head-img {
-  width: 38vw;
-  max-width: 500px;
-  min-width: 280px;
+  width: 36vw;
+  max-width: 480px;
+  min-width: 260px;
   height: auto;
   display: block;
   margin: 0 auto;
-  mix-blend-mode: multiply;
   border: none;
   box-shadow: none;
+  filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.06));
 }
 
 .logo-tagline-img {
@@ -174,8 +175,7 @@ body {
   min-width: 220px;
   height: auto;
   display: block;
-  margin: 1.25rem auto 0 auto;
-  mix-blend-mode: multiply;
+  margin: 1.5rem auto 0 auto;
   border: none;
   box-shadow: none;
 }
