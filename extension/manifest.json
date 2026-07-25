@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "NotByHuman — AI Text Detector",
+  "version": "1.0.0",
+  "description": "Instant stylometric AI text detector. Highlight text anywhere on the web to estimate AI probability.",
+  "permissions": [
+    "contextMenus",
+    "storage",
+    "tabs",
+    "activeTab",
+    "notifications"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}
