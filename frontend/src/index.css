@@ -58,7 +58,7 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: url('/notbyhuman_logo.jpg') no-repeat center center / contain #ffffff;
+  background: url('/logo_head_only.jpg') no-repeat center center / contain #ffffff;
   opacity: var(--logo-opacity);
   pointer-events: none;
   z-index: 0;
@@ -111,8 +111,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
-  padding-bottom: 5rem;
+  justify-content: center;
   text-align: center;
   position: relative;
 }
