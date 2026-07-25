@@ -30,19 +30,18 @@ export default function App() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // Smooth scroll background state transition (White Hero -> Glitch Interface)
+  // Smooth background cross-fade scroll calculation (Page 1 Logo -> Page 2 Glitch)
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 350) {
-        document.body.classList.add('bg-state-glitch');
-        document.body.classList.remove('bg-state-white');
-      } else {
-        document.body.classList.add('bg-state-white');
-        document.body.classList.remove('bg-state-glitch');
-      }
+      const vh = window.innerHeight;
+      const scrollY = window.scrollY;
+      const progress = Math.min(1, Math.max(0, scrollY / (vh * 0.75)));
+
+      document.documentElement.style.setProperty('--logo-opacity', (1 - progress).toString());
+      document.documentElement.style.setProperty('--glitch-opacity', progress.toString());
     };
 
-    handleScroll(); // Initial check
+    handleScroll();
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -140,15 +139,19 @@ export default function App() {
 
   return (
     <div className="app-viewport">
-      {/* 1. Interactive Mouse Pointer Light Leak Flare */}
+      {/* Dual Dynamic Background Cross-Fade Layers */}
+      <div className="bg-layer-logo" />
+      <div className="bg-layer-glitch" />
+
+      {/* Interactive Mouse Pointer Light Leak Flare on Page 2 */}
       <div className="pointer-light-leak" />
 
-      {/* 2. White Hero Landing Experience with Split Head Logo */}
+      {/* PAGE 1: Full-Bleed Logo Background Landing Section */}
       <WhiteLogoHero onScrollToWorkspace={scrollToWorkspace} />
 
-      {/* 3. Centered Workspace Container (Glitch Background Interface) */}
+      {/* PAGE 2: Centered Search Workspace Framing Glitch Background */}
       <div ref={workspaceRef} className="centered-container">
-        {/* Compact Pill Search Bar (Matching Screenshot #1) */}
+        {/* Compact Capsule Pill Search Bar (Matching Screenshot #1) */}
         <InputSection
           text={text}
           setText={setText}
@@ -197,7 +200,7 @@ export default function App() {
         </footer>
       </div>
 
-      {/* 4. Floating Animated "?" Disclaimer Modal */}
+      {/* Floating Animated "?" Disclaimer Modal */}
       <DisclaimerModal />
     </div>
   );
