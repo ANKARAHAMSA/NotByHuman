@@ -39,40 +39,7 @@ export default function App() {
   const bgGlitchRef = useRef(null);
   const pointerLeakRef = useRef(null);
 
-  // Smooth rAF Pointer Interpolation Engine (Zero Mouse Lag & Zero Style Thrashing)
-  useEffect(() => {
-    let targetX = window.innerWidth / 2;
-    let targetY = window.innerHeight / 2;
-    let currentX = targetX;
-    let currentY = targetY;
-    let animationFrameId;
-
-    const handleMouseMove = (e) => {
-      targetX = e.clientX;
-      targetY = e.clientY;
-    };
-
-    const updatePointerLerp = () => {
-      // Linear Interpolation (lerp) factor for liquid smooth motion
-      currentX += (targetX - currentX) * 0.15;
-      currentY += (targetY - currentY) * 0.15;
-
-      document.documentElement.style.setProperty('--mouse-x', `${currentX.toFixed(1)}px`);
-      document.documentElement.style.setProperty('--mouse-y', `${currentY.toFixed(1)}px`);
-
-      animationFrameId = requestAnimationFrame(updatePointerLerp);
-    };
-
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    animationFrameId = requestAnimationFrame(updatePointerLerp);
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, []);
-
-  // Zero-Lag Direct GPU Composited Scroll Engine
+  // Pure Zero-Lag GPU Composited Scroll Engine
   useEffect(() => {
     let ticking = false;
 
@@ -233,14 +200,11 @@ export default function App() {
 
   return (
     <div className="app-viewport">
-      {/* Dynamic Animated Cyber Noise Atmosphere Overlay */}
-      <div className="cyber-noise-overlay" />
-
       {/* Dual Dynamic Background Cross-Fade Layers */}
       <div ref={bgLogoRef} className="bg-layer-logo" />
       <div ref={bgGlitchRef} className="bg-layer-glitch" />
 
-      {/* Interactive Mouse Pointer Light Leak Flare on Page 2 */}
+      {/* Static Ambient Orange Atmosphere Flare */}
       <div ref={pointerLeakRef} className="pointer-light-leak" />
 
       {/* PAGE 1: Full-Bleed Logo Background Landing Section */}
