@@ -113,11 +113,29 @@ function analyzeTextClientSide(inputText) {
   });
 
   const explanations = [
-    `Perplexity (Predictability): ${ppl} (Lower scores indicate AI next-token predictability)`,
-    `Burstiness (Rhythm Variation): ${burstinessCv} (Uniform sentence lengths indicate machine generation)`,
-    `Type-Token Ratio: ${ttr} (${uniqueWords.size} unique words out of ${wordCount} total words)`,
-    `AI Filler Phrase Density: ${aiPhraseDensity}% (${flaggedCount} overused LLM transitions flagged)`
+    {
+      feature: "Perplexity (Predictability)",
+      detail: `${ppl} PPL (${ppl < 35 ? 'Highly predictable word choices - AI indicator' : 'High unpredictable word choices - Human indicator'})`,
+      status: ppl < 35 ? 'AI Flag' : 'Human Characteristic'
+    },
+    {
+      feature: "Burstiness (Rhythm Variation)",
+      detail: `${burstinessCv} CV (${burstinessCv < 0.3 ? 'Uniform sentence structure - AI indicator' : 'Dynamic sentence rhythm - Human indicator'})`,
+      status: burstinessCv < 0.3 ? 'AI Flag' : 'Human Characteristic'
+    },
+    {
+      feature: "Vocabulary Diversity",
+      detail: `${ttr} TTR (${uniqueWords.size} unique words out of ${wordCount} total words)`,
+      status: ttr < 0.55 ? 'AI Flag' : 'Human Characteristic'
+    },
+    {
+      feature: "AI Cliché Phrase Density",
+      detail: `${aiPhraseDensity}% (${flaggedCount} overused LLM transition phrases detected)`,
+      status: aiPhraseDensity > 0.8 ? 'AI Flag' : 'Human Characteristic'
+    }
   ];
+
+  const formattedFlaggedPhrases = flaggedPhrases.map(p => ({ phrase: p, count: 1 }));
 
   return {
     word_count: wordCount,
@@ -135,7 +153,7 @@ function analyzeTextClientSide(inputText) {
     },
     explanations,
     sentence_highlights: sentenceHighlights,
-    flagged_phrases: flaggedPhrases
+    flagged_phrases: formattedFlaggedPhrases
   };
 }
 

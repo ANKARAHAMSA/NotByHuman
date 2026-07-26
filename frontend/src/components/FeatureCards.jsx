@@ -12,7 +12,7 @@ export default function FeatureCards({ metrics, explanations, flaggedPhrases }) 
       value: perplexity,
       unit: 'PPL',
       icon: Activity,
-      color: 'var(--primary-cyan)',
+      color: '#ff6b00',
       desc: perplexity < 35 ? 'Low (Highly Predictable)' : 'High (Unpredictable / Creative)',
       explanation: 'Measures how predictable text is to a language model. Lower perplexity indicates uniform AI continuation.'
     },
@@ -21,7 +21,7 @@ export default function FeatureCards({ metrics, explanations, flaggedPhrases }) 
       value: burstiness_cv,
       unit: 'CV',
       icon: Zap,
-      color: 'var(--primary-purple)',
+      color: '#ff8800',
       desc: burstiness_cv < 0.3 ? 'Low (Uniform Sentences)' : 'High (Dynamic Rhythm)',
       explanation: 'Sentence length variance. Humans write with mixed short/long sentences; AI writes with uniform rhythm.'
     },
@@ -31,7 +31,7 @@ export default function FeatureCards({ metrics, explanations, flaggedPhrases }) 
       unit: 'TTR',
       icon: BookOpen,
       color: 'var(--accent-green)',
-      desc: ttr < 0.5 ? 'Low Diversity' : 'High Diversity',
+      desc: ttr < 0.55 ? 'Low Diversity' : 'High Diversity',
       explanation: 'Type-Token Ratio of unique vs total words. Higher diversity reflects rich natural phrasing.'
     },
     {
@@ -51,7 +51,8 @@ export default function FeatureCards({ metrics, explanations, flaggedPhrases }) 
         fontFamily: 'var(--font-heading)',
         fontSize: '1.25rem',
         fontWeight: '700',
-        marginBottom: '1rem'
+        marginBottom: '1rem',
+        color: '#ffffff'
       }}>
         Stylometric Feature Breakdown
       </h3>
@@ -59,7 +60,7 @@ export default function FeatureCards({ metrics, explanations, flaggedPhrases }) 
       {/* Metric Cards Grid */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
         gap: '1rem',
         marginBottom: '1.5rem'
       }}>
@@ -78,7 +79,8 @@ export default function FeatureCards({ metrics, explanations, flaggedPhrases }) 
                 fontFamily: 'var(--font-heading)',
                 fontSize: '1.75rem',
                 fontWeight: '700',
-                marginBottom: '4px'
+                marginBottom: '4px',
+                color: '#ffffff'
               }}>
                 {card.value} <span style={{ fontSize: '0.9rem', color: 'var(--text-dim)' }}>{card.unit}</span>
               </div>
@@ -97,33 +99,55 @@ export default function FeatureCards({ metrics, explanations, flaggedPhrases }) 
           fontSize: '1.05rem',
           fontFamily: 'var(--font-heading)',
           fontWeight: '700',
-          marginBottom: '1rem'
+          marginBottom: '1rem',
+          color: '#ffffff'
         }}>
           Classifier Explainability Log
         </h4>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           {explanations?.map((exp, i) => {
-            const isAiFlag = exp.status === 'AI Flag';
+            let featureText = '';
+            let detailText = '';
+            let isAiFlag = false;
+
+            if (typeof exp === 'object' && exp !== null) {
+              featureText = exp.feature || 'Linguistic Feature';
+              detailText = exp.detail || exp.text || '';
+              isAiFlag = exp.status === 'AI Flag';
+            } else if (typeof exp === 'string') {
+              const parts = exp.split(':');
+              if (parts.length > 1) {
+                featureText = parts[0].trim();
+                detailText = parts.slice(1).join(':').trim();
+              } else {
+                featureText = 'Feature';
+                detailText = exp;
+              }
+              isAiFlag = exp.toLowerCase().includes('ai') || exp.toLowerCase().includes('predictable');
+            }
+
             return (
               <div key={i} style={{
                 display: 'flex',
                 alignItems: 'flex-start',
                 gap: '12px',
-                padding: '10px 14px',
-                background: isAiFlag ? 'rgba(244, 63, 94, 0.08)' : 'rgba(16, 185, 129, 0.08)',
-                border: `1px solid ${isAiFlag ? 'rgba(244, 63, 94, 0.2)' : 'rgba(16, 185, 129, 0.2)'}`,
-                borderRadius: '10px',
-                fontSize: '0.9rem'
+                padding: '12px 16px',
+                background: isAiFlag ? 'rgba(244, 63, 94, 0.12)' : 'rgba(16, 185, 129, 0.12)',
+                border: `1.5px solid ${isAiFlag ? 'rgba(244, 63, 94, 0.35)' : 'rgba(16, 185, 129, 0.35)'}`,
+                borderRadius: '12px',
+                fontSize: '0.92rem'
               }}>
                 {isAiFlag ? (
-                  <AlertCircle size={18} color="var(--accent-rose)" style={{ marginTop: '2px', flexShrink: 0 }} />
+                  <AlertCircle size={18} color="#f43f5e" style={{ marginTop: '2px', flexShrink: 0 }} />
                 ) : (
-                  <CheckCircle2 size={18} color="var(--accent-green)" style={{ marginTop: '2px', flexShrink: 0 }} />
+                  <CheckCircle2 size={18} color="#10b981" style={{ marginTop: '2px', flexShrink: 0 }} />
                 )}
                 <div>
-                  <strong style={{ color: isAiFlag ? '#fecdd3' : '#d1fae5' }}>{exp.feature}: </strong>
-                  <span style={{ color: 'var(--text-muted)' }}>{exp.detail}</span>
+                  <strong style={{ color: isAiFlag ? '#fecdd3' : '#d1fae5', fontFamily: 'var(--font-heading)' }}>
+                    {featureText}:{' '}
+                  </strong>
+                  <span style={{ color: '#e2e8f0' }}>{detailText}</span>
                 </div>
               </div>
             );
@@ -136,11 +160,15 @@ export default function FeatureCards({ metrics, explanations, flaggedPhrases }) 
               Flagged AI Transition Words:
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-              {flaggedPhrases.map((item, idx) => (
-                <span key={idx} className="badge badge-rose">
-                  "{item.phrase}" ({item.count})
-                </span>
-              ))}
+              {flaggedPhrases.map((item, idx) => {
+                const phraseStr = typeof item === 'object' && item !== null ? item.phrase : String(item);
+                const countStr = typeof item === 'object' && item !== null && item.count ? ` (${item.count})` : '';
+                return (
+                  <span key={idx} className="badge badge-rose">
+                    "{phraseStr}"{countStr}
+                  </span>
+                );
+              })}
             </div>
           </div>
         )}
