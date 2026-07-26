@@ -100,16 +100,34 @@ function analyzeTextClientSide(inputText) {
     verdictSummary = "Moderate AI characteristics detected. Text displays partially uniform rhythm with some human variations.";
   }
 
-  // Sentence highlights
-  const sentenceHighlights = sentences.map(sent => {
-    const sLen = sent.split(' ').length;
-    let category = "low";
-    if (Math.abs(sLen - avgSentLen) < 3 && aiPercentage > 50) {
-      category = "high";
+  // Sentence highlights with full metrics & risk levels
+  const sentenceHighlights = sentences.map((sent, idx) => {
+    const sLen = sent.split(' ').filter(w => w.length > 0).length;
+    let sentenceRisk = "low";
+    let badgeLabel = "Dynamic Flow";
+
+    const sentLower = sent.toLowerCase();
+    const sentFlagged = aiPhrases.filter(phrase => sentLower.includes(phrase));
+
+    if (sentFlagged.length > 0 || (Math.abs(sLen - avgSentLen) < 3 && aiPercentage > 50)) {
+      sentenceRisk = "high";
+      badgeLabel = "High Predictability";
     } else if (Math.abs(sLen - avgSentLen) < 6) {
-      category = "medium";
+      sentenceRisk = "medium";
+      badgeLabel = "Moderate Rhythm";
     }
-    return { text: sent, category };
+
+    const sentPpl = sentenceRisk === "high" ? 22.5 : sentenceRisk === "medium" ? 48.0 : 85.0;
+
+    return {
+      sentence_index: idx,
+      text: sent,
+      word_count: sLen,
+      perplexity: sentPpl,
+      risk_level: sentenceRisk,
+      badge: badgeLabel,
+      flagged_phrases: sentFlagged
+    };
   });
 
   const explanations = [

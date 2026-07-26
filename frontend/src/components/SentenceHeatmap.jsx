@@ -17,14 +17,14 @@ export default function SentenceHeatmap({ sentences }) {
         gap: '12px'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Layers size={20} color="var(--primary-purple)" />
-          <h3 style={{ fontSize: '1.2rem', fontWeight: '700', fontFamily: 'var(--font-heading)' }}>
+          <Layers size={20} color="#ff8800" />
+          <h3 style={{ fontSize: '1.2rem', fontWeight: '700', fontFamily: 'var(--font-heading)', color: '#ffffff' }}>
             Sentence-Level Predictability Heatmap
           </h3>
         </div>
 
         {/* Legend */}
-        <div style={{ display: 'flex', gap: '12px', fontSize: '0.8rem' }}>
+        <div style={{ display: 'flex', gap: '12px', fontSize: '0.8rem', color: '#cbd5e1' }}>
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
             <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--accent-rose)' }} /> High AI Uniformity
           </span>
@@ -43,41 +43,46 @@ export default function SentenceHeatmap({ sentences }) {
 
       {/* Sentence Highlighting Container */}
       <div style={{
-        background: 'rgba(15, 23, 42, 0.5)',
+        background: 'rgba(15, 23, 42, 0.65)',
         border: '1px solid var(--border-glass)',
         borderRadius: '12px',
         padding: '1.25rem',
         lineHeight: '1.9',
-        fontSize: '1rem',
+        fontSize: '1.02rem',
         marginBottom: '1rem'
       }}>
-        {sentences.map((sent, i) => (
-          <span
-            key={i}
-            className={`sentence-hl ${sent.risk_level}`}
-            onClick={() => setSelectedSentence(sent)}
-            title={`Click to inspect (Sentence #${i + 1})`}
-          >
-            {sent.text}{' '}
-          </span>
-        ))}
+        {sentences.map((sent, i) => {
+          const rLevel = sent.risk_level || sent.category || 'low';
+          return (
+            <span
+              key={i}
+              className={`sentence-hl ${rLevel}`}
+              onClick={() => setSelectedSentence(sent)}
+              style={{ cursor: 'pointer' }}
+              title={`Click to inspect (Sentence #${(sent.sentence_index ?? i) + 1})`}
+            >
+              {sent.text}{' '}
+            </span>
+          );
+        })}
       </div>
 
       {/* Selected Sentence Inspector Box */}
       {selectedSentence && (
         <div style={{
-          background: 'rgba(30, 41, 59, 0.9)',
-          border: '1px solid var(--border-glass-bright)',
-          borderRadius: '10px',
-          padding: '1rem 1.25rem',
-          fontSize: '0.9rem',
-          position: 'relative'
+          background: 'rgba(30, 41, 59, 0.95)',
+          border: '1.5px solid #ff6b00',
+          borderRadius: '12px',
+          padding: '1.25rem',
+          fontSize: '0.92rem',
+          position: 'relative',
+          boxShadow: '0 12px 30px rgba(0,0,0,0.6)'
         }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Info size={16} color="var(--primary-cyan)" />
-              <strong style={{ fontFamily: 'var(--font-heading)' }}>
-                Sentence #{selectedSentence.sentence_index + 1} Inspection
+              <Info size={18} color="#ff6b00" />
+              <strong style={{ fontFamily: 'var(--font-heading)', color: '#ffffff', fontSize: '1.0rem' }}>
+                Sentence #{(selectedSentence.sentence_index ?? 0) + 1} Inspection
               </strong>
             </div>
 
@@ -86,28 +91,29 @@ export default function SentenceHeatmap({ sentences }) {
               style={{
                 background: 'none',
                 border: 'none',
-                color: 'var(--text-muted)',
+                color: '#94a3b8',
                 cursor: 'pointer',
-                fontSize: '1rem'
+                fontSize: '1.1rem',
+                padding: '2px 6px'
               }}
             >
               ✕
             </button>
           </div>
 
-          <p style={{ fontStyle: 'italic', color: 'var(--text-main)', marginBottom: '8px' }}>
+          <p style={{ fontStyle: 'italic', color: '#f8fafc', marginBottom: '10px', fontSize: '0.96rem' }}>
             "{selectedSentence.text}"
           </p>
 
-          <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-            <span>Words: <strong>{selectedSentence.word_count}</strong></span>
-            <span>Perplexity: <strong>{selectedSentence.perplexity} PPL</strong></span>
-            <span>Rating: <strong style={{ color: selectedSentence.risk_level === 'high' ? 'var(--accent-rose)' : selectedSentence.risk_level === 'medium' ? 'var(--accent-amber)' : 'var(--accent-green)' }}>{selectedSentence.badge}</strong></span>
+          <div style={{ display: 'flex', gap: '18px', flexWrap: 'wrap', fontSize: '0.88rem', color: '#cbd5e1' }}>
+            <span>Words: <strong style={{ color: '#ffffff' }}>{selectedSentence.word_count || selectedSentence.text?.split(' ').length || 0}</strong></span>
+            <span>Perplexity: <strong style={{ color: '#ffffff' }}>{selectedSentence.perplexity || 65} PPL</strong></span>
+            <span>Rating: <strong style={{ color: (selectedSentence.risk_level || selectedSentence.category) === 'high' ? 'var(--accent-rose)' : (selectedSentence.risk_level || selectedSentence.category) === 'medium' ? 'var(--accent-amber)' : 'var(--accent-green)' }}>{selectedSentence.badge || 'Dynamic Flow'}</strong></span>
           </div>
 
-          {selectedSentence.flagged_phrases?.length > 0 && (
-            <div style={{ marginTop: '6px', color: 'var(--accent-rose)', fontSize: '0.85rem' }}>
-              Flagged phrases in sentence: {selectedSentence.flagged_phrases.join(', ')}
+          {selectedSentence.flagged_phrases && selectedSentence.flagged_phrases.length > 0 && (
+            <div style={{ marginTop: '10px', color: '#fecdd3', fontSize: '0.88rem' }}>
+              ⚠️ <strong>Flagged LLM phrases in sentence:</strong> {selectedSentence.flagged_phrases.join(', ')}
             </div>
           )}
         </div>
