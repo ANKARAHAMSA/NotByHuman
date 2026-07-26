@@ -550,3 +550,116 @@ body {
   color: #10b981;
   border: 1px solid rgba(16, 185, 129, 0.4);
 }
+
+/* MOBILE RESPONSIVE MEDIA QUERIES (< 640px) */
+@media (max-width: 640px) {
+  /* Page 1 Hero Section & Logo Scaling */
+  .hero-page-section {
+    padding: 2rem 1rem;
+  }
+
+  .logo-head-img {
+    width: 78vw;
+    max-width: 340px;
+    min-width: 220px;
+  }
+
+  .logo-tagline-img {
+    width: 74vw;
+    max-width: 290px;
+    min-width: 200px;
+    margin-top: 1.25rem;
+  }
+
+  /* Page 2 Workspace Section */
+  .workspace-page-section {
+    padding: 2rem 0.85rem;
+  }
+
+  .centered-container {
+    width: 100%;
+    padding: 0 0.25rem;
+  }
+
+  /* Localized Search Vignette Halo on Mobile */
+  .search-vignette-halo {
+    width: 120%;
+    height: 180px;
+  }
+
+  /* Pill Search Container on Mobile */
+  .pill-search-container {
+    padding: 8px 10px 8px 14px;
+    gap: 8px;
+    margin-bottom: 1.25rem;
+  }
+
+  .pill-input {
+    font-size: 0.9rem;
+    min-width: 0;
+  }
+
+  .pill-input::placeholder {
+    font-size: 0.82rem;
+  }
+
+  .pill-action-btn {
+    padding: 10px 18px;
+    font-size: 0.88rem;
+  }
+
+  .pill-icon-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  /* Preset Cyber Chips Container on Mobile */
+  .preset-chip-container {
+    gap: 10px;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .preset-badge {
+    font-size: 0.76rem;
+    padding: 6px 14px;
+  }
+
+  .preset-chip-human, .preset-chip-ai {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 16px;
+    font-size: 0.88rem;
+  }
+
+  /* Floating FAB Button on Mobile */
+  .fab-info-btn {
+    bottom: 20px;
+    right: 20px;
+    width: 48px;
+    height: 48px;
+    font-size: 1.25rem;
+  }
+
+  /* Modal Card on Mobile */
+  .modal-card {
+    padding: 1.5rem;
+    max-height: 88vh;
+    overflow-y: auto;
+    border-radius: 16px;
+  }
+}
+
+@media (max-width: 440px) {
+  .pill-search-container {
+    flex-wrap: wrap;
+    border-radius: 24px;
+    padding: 12px;
+  }
+
+  .pill-input {
+    width: 100%;
+    margin-bottom: 8px;
+    padding: 4px 6px;
+  }
+}
