@@ -117,7 +117,7 @@ body {
   will-change: transform, opacity;
 }
 
-/* INTERACTIVE MOUSE LIGHT LEAKS & ATMOSPHERE FLARE */
+/* HARDWARE-ACCELERATED MOUSE LIGHT LEAKS & ATMOSPHERE FLARE */
 .pointer-light-leak {
   position: fixed;
   top: 0;
@@ -125,15 +125,16 @@ body {
   width: 100vw;
   height: 100vh;
   background: radial-gradient(
-    600px circle at var(--mouse-x) var(--mouse-y),
-    rgba(255, 107, 0, 0.18),
-    rgba(255, 136, 0, 0.1) 40%,
+    550px circle at var(--mouse-x) var(--mouse-y),
+    rgba(255, 107, 0, 0.16),
+    rgba(255, 136, 0, 0.08) 40%,
     transparent 80%
   );
   opacity: var(--glitch-opacity);
   pointer-events: none;
   z-index: 1;
-  will-change: opacity;
+  will-change: transform, opacity;
+  transform: translate3d(0, 0, 0);
 }
 
 /* Page Layout */
@@ -204,12 +205,10 @@ body {
 
 /* High Contrast Glassmorphism Panels */
 .glass-panel {
-  background: var(--bg-card);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(18, 20, 28, 0.94);
   border: 1px solid var(--border-glass);
   border-radius: 20px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), inset 0 1px 1px rgba(255, 255, 255, 0.2);
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   z-index: 2;
@@ -252,17 +251,15 @@ body {
 
 /* DEEP OBSIDIAN HIGH-CONTRAST PILL SEARCH BAR STYLES */
 .pill-search-container {
-  background: rgba(11, 13, 20, 0.95);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1.5px solid rgba(255, 107, 0, 0.5);
+  background: rgba(11, 13, 20, 0.96);
+  border: 1.5px solid rgba(255, 107, 0, 0.55);
   border-radius: 9999px;
   padding: 8px 12px 8px 20px;
   display: flex;
   align-items: center;
   gap: 12px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85), 0 0 35px rgba(255, 107, 0, 0.35);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85), 0 0 35px rgba(255, 107, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   z-index: 2;
   width: 100%;
@@ -272,7 +269,7 @@ body {
 
 .pill-search-container:hover, .pill-search-container:focus-within {
   border-color: #ff6b00;
-  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.95), 0 0 45px rgba(255, 107, 0, 0.55);
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.95), 0 0 45px rgba(255, 107, 0, 0.55), inset 0 1px 2px rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
 }
 
@@ -290,13 +287,11 @@ body {
   color: #94a3b8;
 }
 
-/* UNIVERSAL GLASSMORPHIC BUTTON STYLES */
+/* HARDWARE-ACCELERATED GPU GLASSMORPHIC BUTTON STYLES (ZERO LAG) */
 .pill-action-btn {
-  background: rgba(255, 107, 0, 0.3);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(255, 107, 0, 0.85);
   color: #ffffff;
-  border: 1.5px solid rgba(255, 107, 0, 0.7);
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
   border-radius: 9999px;
   padding: 12px 30px;
   font-weight: 800;
@@ -305,15 +300,16 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 8px 25px rgba(255, 107, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.45);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 25px rgba(255, 107, 0, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.5);
+  will-change: transform;
 }
 
 .pill-action-btn:hover {
-  background: rgba(255, 107, 0, 0.55);
+  background: #ff6b00;
   border-color: #ffffff;
   transform: translateY(-2px) scale(1.04);
-  box-shadow: 0 12px 35px rgba(255, 107, 0, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.65);
+  box-shadow: 0 12px 35px rgba(255, 107, 0, 0.65), inset 0 1px 2px rgba(255, 255, 255, 0.7);
 }
 
 .pill-action-btn:disabled {
@@ -323,10 +319,8 @@ body {
 }
 
 .pill-icon-btn {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1.5px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
   color: #cbd5e1;
   width: 42px;
   height: 42px;
@@ -334,16 +328,17 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.35);
+  will-change: transform;
 }
 
 .pill-icon-btn:hover {
-  background: rgba(255, 107, 0, 0.3);
+  background: rgba(255, 107, 0, 0.35);
   border-color: #ff6b00;
   color: #ffffff;
-  transform: scale(1.1);
-  box-shadow: 0 8px 25px rgba(255, 107, 0, 0.45), inset 0 1px 2px rgba(255, 255, 255, 0.5);
+  transform: scale(1.08);
+  box-shadow: 0 8px 25px rgba(255, 107, 0, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.5);
 }
 
 /* HIGH-CONTRAST GLASSMORPHIC PRESET CYBER CHIPS */
@@ -359,9 +354,7 @@ body {
 }
 
 .preset-badge {
-  background: rgba(11, 13, 20, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(11, 13, 20, 0.92);
   border: 1.5px solid rgba(255, 255, 255, 0.2);
   color: #ffffff;
   padding: 8px 16px;
@@ -373,14 +366,12 @@ body {
   display: flex;
   align-items: center;
   gap: 6px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.2);
 }
 
 .preset-chip-human {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1.5px solid rgba(255, 107, 0, 0.6);
+  background: rgba(11, 13, 20, 0.92);
+  border: 1.5px solid rgba(255, 107, 0, 0.65);
   color: #ffffff;
   padding: 10px 22px;
   border-radius: 9999px;
@@ -390,23 +381,22 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.35);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  will-change: transform;
 }
 
 .preset-chip-human:hover {
-  background: rgba(255, 107, 0, 0.4);
+  background: linear-gradient(135deg, #ff6b00 0%, #ff8800 100%);
   border-color: #ffffff;
   color: #ffffff;
-  transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 12px 35px rgba(255, 107, 0, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.6);
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 12px 35px rgba(255, 107, 0, 0.65), inset 0 1px 2px rgba(255, 255, 255, 0.5);
 }
 
 .preset-chip-ai {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  background: rgba(11, 13, 20, 0.92);
+  border: 1.5px solid rgba(255, 255, 255, 0.65);
   color: #ffffff;
   padding: 10px 22px;
   border-radius: 9999px;
@@ -416,15 +406,16 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.35);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  will-change: transform;
 }
 
 .preset-chip-ai:hover {
-  background: rgba(255, 255, 255, 0.95);
+  background: #ffffff;
   border-color: #ffffff;
   color: #0f172a;
-  transform: translateY(-3px) scale(1.05);
+  transform: translateY(-3px) scale(1.04);
   box-shadow: 0 12px 35px rgba(255, 255, 255, 0.65), inset 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
@@ -463,9 +454,7 @@ body {
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: rgba(255, 107, 0, 0.35);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: linear-gradient(135deg, #ff6b00 0%, #ff8800 100%);
   border: 2px solid rgba(255, 255, 255, 0.85);
   color: #ffffff;
   font-family: var(--font-heading);
@@ -476,12 +465,13 @@ body {
   justify-content: center;
   box-shadow: 0 12px 35px rgba(255, 107, 0, 0.45), inset 0 1px 2px rgba(255, 255, 255, 0.5);
   z-index: 999;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   animation: fabPulse 3s infinite;
+  will-change: transform;
 }
 
 .fab-info-btn:hover {
-  transform: scale(1.15) rotate(10deg);
+  transform: scale(1.12) rotate(10deg);
   background: rgba(255, 255, 255, 0.95);
   border-color: #ff6b00;
   color: #ff6b00;
@@ -495,8 +485,6 @@ body {
   width: 100vw;
   height: 100vh;
   background: rgba(15, 20, 28, 0.75);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
   z-index: 1000;
   display: flex;
   align-items: center;

@@ -39,17 +39,37 @@ export default function App() {
   const bgGlitchRef = useRef(null);
   const pointerLeakRef = useRef(null);
 
-  // Mouse cursor tracking for interactive pointer light leaks
+  // Smooth rAF Pointer Interpolation Engine (Zero Mouse Lag & Zero Style Thrashing)
   useEffect(() => {
+    let targetX = window.innerWidth / 2;
+    let targetY = window.innerHeight / 2;
+    let currentX = targetX;
+    let currentY = targetY;
+    let animationFrameId;
+
     const handleMouseMove = (e) => {
-      const x = `${e.clientX}px`;
-      const y = `${e.clientY}px`;
-      document.documentElement.style.setProperty('--mouse-x', x);
-      document.documentElement.style.setProperty('--mouse-y', y);
+      targetX = e.clientX;
+      targetY = e.clientY;
+    };
+
+    const updatePointerLerp = () => {
+      // Linear Interpolation (lerp) factor for liquid smooth motion
+      currentX += (targetX - currentX) * 0.15;
+      currentY += (targetY - currentY) * 0.15;
+
+      document.documentElement.style.setProperty('--mouse-x', `${currentX.toFixed(1)}px`);
+      document.documentElement.style.setProperty('--mouse-y', `${currentY.toFixed(1)}px`);
+
+      animationFrameId = requestAnimationFrame(updatePointerLerp);
     };
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    animationFrameId = requestAnimationFrame(updatePointerLerp);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      cancelAnimationFrame(animationFrameId);
+    };
   }, []);
 
   // Zero-Lag Direct GPU Composited Scroll Engine
